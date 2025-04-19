@@ -1,4 +1,5 @@
 from z3 import *
+
 import random
 
 
@@ -21,7 +22,7 @@ def solve_random_age_riddle():
         solver.add(age1 * age2 * age3 == random_product)      # Product of ages
         solver.add(age1 + age2 + age3 == random_sum)      # Sum of ages
 
-        if solver.check() == 'sat':
+        if solver.check() == sat:
             model = solver.model()
             print(f"Found satisfying instance with product = {random_product} and sum = {random_sum}: "
                   f"age1 = {model[age1]}, age2 = {model[age2]}, age3 = {model[age3]}")
@@ -61,7 +62,7 @@ def solve_age_riddle():
     solver.add(age1 <= age2, age2 <= age3)
 
     # Solve the puzzle
-    if solver.check() == 'sat':
+    if solver.check() == sat:
         model = solver.model()
         print(f"Solution: age1 = {model[age1]}, age2 = {model[age2]}, age3 = {model[age3]}")
     else:
@@ -69,3 +70,4 @@ def solve_age_riddle():
 
 
 solve_age_riddle()
+solve_random_age_riddle()
