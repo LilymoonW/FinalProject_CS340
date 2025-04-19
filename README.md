@@ -7,7 +7,7 @@ and truth-teller puzzles, and the third is age riddles. We will focus on three
 categories, but may add more if time permits:
 
 
-• River Crossing Puzzles – These involve transporting people or items
+River Crossing Puzzles - These involve transporting people or items
 across a river with specific constraints (e.g., the Cabbage can’t be left with
 the Goat). We will model variations of these problems and verify valid
 sequences of moves using Alloy
