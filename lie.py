@@ -1,5 +1,6 @@
 from z3 import *
 
+#
 
 # Alice and Bob are residents of the island of knaves and knights
 # Bob says: “We are both knaves”
