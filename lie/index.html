@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knights and Knaves Clam Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Clams and Scallops</h1>
+  </header>
+
+
+
+  <main>
+    <p>Amari, Bea, and Clara are shellfish. Each is either a Clam (Truth-teller) or a Scallop (Liar).  
+    Use their statements to figure out who is who!</p>
+
+    <div id="clamContainer">
+      <div class="clam">
+        <img src="clam-blue.png" alt="Clam" />
+        <p>Amari</p>
+
+        <select id="clam1">
+            <option value="Clam">Clam</option>
+            <option value="Scallop">Scallop</option>
+        </select>
+
+      </div>
+
+      <div class="clam">
+        <img src="clam-pink.png" alt="Clam" />
+        <p>Bea</p>
+
+        <select id="clam2">
+            <option value="Clam">Clam</option>
+            <option value="Scallop">Scallop</option>
+        </select>
+      </div>
+
+      <div class="clam">
+        <img src="clam-green.png" alt="Clam" />
+        <p>Clara</p>
+
+        <select id="clam3">
+            <option value="Clam">Clam</option>
+            <option value="Scallop">Scallop</option>
+        </select>
+      </div>
+    </div>
+
+    <div class = "button-container"> 
+        <button type="button" onclick = "submitChoices()">Submit</button>
+    </div>
+
+    <div id="statements">
+      <p><strong>Amari:</strong> "Bea is a Scallop."</p>
+      <p><strong>Bea:</strong> "Clara is a Scallop or Amari is an Clam."</p>
+      <p><strong>Clara:</strong> "I'm an Clam, and Bea is a Scallop."</p>
+    </div>
+
+    <div id="choices">
+      <p>Guess whether each shellfish is a Clam or a Scallop!</p>
+    </div>
+
+    <p id="result"></p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
