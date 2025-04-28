@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>River Crossing Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>River Crossing: Fox, Goose, and Lettuce</h1>
+</header>
+
+<main>
+  <p>Help the farmer get the fox, goose, and lettuce safely across the river!</p>
+
+  <div id="riverbanks">
+    <!-- Left Bank -->
+    <div id="left-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
+      <div id="fox" class="item" draggable="true">
+        <img src="assets/fox.png" alt="Fox">
+      </div>
+      <div id="goose" class="item" draggable="true">
+        <img src="assets/goose.png" alt="Goose">
+      </div>
+      <div id="lettuce" class="item" draggable="true">
+        <img src="assets/lettuce.png" alt="Lettuce">
+      </div>
+      <div id="farmer" class="item" draggable="true">
+        <img src="assets/farmer.png" alt="Farmer">
+      </div>
+    </div>
+
+    <!-- River and Boat -->
+    <div id="river">
+      <div id="boat" ondrop="dropIntoBoat(event)" ondragover="allowDrop(event)">
+        <img src="assets/boat.png" alt="Boat">
+      </div>
+    </div>
+
+    <!-- Right Bank -->
+    <div id="right-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
+      <!-- Empty at start -->
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="button" onclick="moveBoat()">Move Boat!</button>
+    <button type="button" onclick="resetGame()">Reset Game</button> <!-- NEW RESET BUTTON -->
+  </div>
+  
+
+  <p id="message"></p>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
