@@ -3,7 +3,6 @@ from z3 import *
 
 import random
 
-
 def solve_random_age_riddle():
     # Define variables for the ages of three children
     age1 = Int('age1')
