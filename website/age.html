@@ -1,136 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Age Riddle Solver</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #riddle, #solution, #verification, #userVerification {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
-        }
-        #pixelGif {
-            display: none; /* Hide it at first */
-            width: 200px; /* Or whatever size you want */
-            image-rendering: pixelated; /* Makes it look crispy like pixel art! */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Library Escape Adventure</title>
+  <style>
+    body {
+        background: url("/static/wood.png") no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        font-family: Arial, sans-serif;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+        overflow: hidden;
+    }
+
+    .container {
+        background-image: url("/static/clamdoor.png");
+        width: 70%;
+        height: 85%;
+        margin: 10px auto 0 auto;
+        background-size: cover; 
+        background-repeat: no-repeat;
+        background-position: center center;
+        border: 5px solid #3f0606;
+        border-radius: 5px;
+        position: relative;
+        transition: background-image 1s ease-in-out, opacity 0.5s ease;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #533712;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #5f4006;
+    }
+
+    #dialogue-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 45%;
+      background-color: rgba(15, 1, 1, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+      transition: opacity 0.5s ease;
+    }
+
+    #dialogue-content {
+      text-align: center;
+      color: rgb(255, 255, 255);
+      position: relative;
+      width: 90%;
+    }
+
+    #close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      background: transparent;
+      color: white;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+    }
+    #close-btn:hover {
+      color: red;
+    }
+
+    #open-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 18px;
+      border: none;
+      background-color: #533712;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #open-btn.hidden {
+      display: none;
+    }
+
+    #riddle-section {
+      display: none;
+      text-align: center;
+      color: black;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    #pixelGif {
+      display: none;
+      width: 200px;
+      image-rendering: pixelated;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Age Riddle Solver</h1>
-    
-    <button onclick="solveRiddle()">Solve New Riddle</button> <!-- 👈 Correct button call -->
+  <div id="dialogue-box">
+    <div id="dialogue-content">
+      <button id="close-btn">X</button>
+      <h2 id="story-text">Woosh! You are teleported into a library-like room with a clam-shaped door. Do you go closer?</h2>
+      <div id="button-group">
+        <button onclick="goCloser()">Yes</button>
+        <button onclick="stayBack()">No</button>
+      </div>
+    </div>
+  </div>
 
-    <div id="riddle"></div>
-    <div id="solution"></div>
-    <div id="verification"></div>
+  <div class="container" id="background-container">
 
-    <h2>Enter your guess:</h2>
-    <input type="number" id="guess1" placeholder="First age">
-    <input type="number" id="guess2" placeholder="Second age">
-    <input type="number" id="guess3" placeholder="Third age">
-    <button onclick="verifyGuess()">Check My Guess</button> <!-- 👈 Correct button call -->
-    <img id="pixelGif" src="/static/goose.gif" alt="Pixel Art">
+    <div id="riddle-section">
+      <h2 id="riddle-text">Loading riddle...</h2>
+      <input type="number" id="guess1" placeholder="First number" />
+      <input type="number" id="guess2" placeholder="Second number" />
+      <input type="number" id="guess3" placeholder="Third number" />
+      <br>
+      <button onclick="verifyGuess()">Check Code</button>
+      <div id="solution"></div>
+      <div id="verification"></div>
+      <div id="userVerification"></div>
+      <img id="pixelGif" src="/static/goose.gif" alt="Pixel Art" />
+    </div>
 
-    <div id="userVerification"></div> <!-- To show user guess result -->
+    <button id="open-btn" class="hidden">Open Dialogue</button>
 
-    <script>
-        // 🌟 Global Variables
-        let globalAge1, globalAge2, globalAge3;
-        let globalProduct, globalSum;
-        let globalProductCheck, globalSumCheck;
-        let globalVerificationText;
+  </div>
 
-        let userGuess1, userGuess2, userGuess3;
-        let userProduct, userSum;
-        let userVerificationText;
+<script>
+  // 🌟 Global Variables
+  let globalAge1, globalAge2, globalAge3;
+  let globalProduct, globalSum;
+  let globalProductCheck, globalSumCheck;
+  let globalVerificationText;
 
-        // 🌟 Solve Riddle (called when loading or new riddle)
-        function solveRiddle() {
-            fetch('/solve')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById('riddle').innerText = data.error;
-                        document.getElementById('solution').innerText = '';
-                        document.getElementById('verification').innerText = '';
-                    } else {
-                        // Save into global variables
-                        globalProduct = data.product;
-                        globalSum = data.sum;
-                        [globalAge1, globalAge2, globalAge3] = data.ages;
+  let userGuess1, userGuess2, userGuess3;
+  let userProduct, userSum;
+  let userVerificationText;
 
-                        globalProductCheck = globalAge1 * globalAge2 * globalAge3;
-                        globalSumCheck = globalAge1 + globalAge2 + globalAge3;
+  function goCloser() {
+    document.getElementById('story-text').innerText = "You see something by the door. Do you observe it?";
+    document.getElementById('button-group').innerHTML = `
+      <button onclick="observeDoor()">Yes</button>
+      <button onclick="refuseObserve()">No</button>
+    `;
+  }
 
-                        globalVerificationText = 
-                            (globalProductCheck === globalProduct && globalSumCheck === globalSum)
-                            ? "✅ Verification Passed!"
-                            : "❌ Verification Failed!";
+  function stayBack() {
+    document.getElementById('story-text').innerText = "There isn't much to do. If you don't act, you might be trapped here forever...";
+    document.getElementById('button-group').innerHTML = `
+      <button onclick="observeDoor()">Observe Door</button>
+      <button onclick="commentBooks()">Ignore</button>
+    `;
+  }
 
-                        // Update the riddle display
-                        document.getElementById('riddle').innerText = 
-                            `Find three ages where:\nProduct = ${globalProduct}, Sum = ${globalSum}`;
-                        
-                        console.log(`Real ages: ${globalAge1}, ${globalAge2}, ${globalAge3}`);   
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+  function commentBooks() {
+    document.getElementById('story-text').innerText = "You find a few books about Alloy and Z3 — how cool! But you must focus on escaping.";
+    document.getElementById('button-group').innerHTML = `
+      <button onclick="observeDoor()">Observe Door</button>
+    `;
+  }
+
+  function observeDoor() {
+    const container = document.getElementById('background-container');
+    container.style.opacity = '0';
+    setTimeout(() => {
+      container.style.backgroundImage = "url('/static/lock.png')";
+      container.style.opacity = '1';
+    }, 500);
+
+    const riddleSection = document.getElementById('riddle-section');
+    riddleSection.style.display = 'none';
+
+    document.getElementById('story-text').innerText = "You see a lock and pin, and you observe some writing...";
+    document.getElementById('button-group').innerHTML = `
+      <button onclick="nextStoryStep()">Continue</button>
+    `;
+  }
+
+  function nextStoryStep() {
+    document.getElementById('story-text').innerText = "Hmm... I think I have to solve this to unlock the door and escape.";
+    document.getElementById('button-group').innerHTML = `
+      <button onclick="showRiddleInput()">Solve Riddle</button>
+    `;
+  }
+
+  function showRiddleInput() {
+    document.getElementById('story-text').innerText = `Find three ages where:\nProduct = ${globalProduct}, Sum = ${globalSum}`;
+    document.getElementById('button-group').innerHTML = ``; // Remove buttons
+    document.getElementById('riddle-section').style.display = 'block';
+  }
+
+  function solveRiddle() {
+    fetch("/solve")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          document.getElementById("solution").innerText = data.error;
+          document.getElementById("verification").innerText = "";
+        } else {
+          globalProduct = data.product;
+          globalSum = data.sum;
+          [globalAge1, globalAge2, globalAge3] = data.ages;
+
+          globalProductCheck = globalAge1 * globalAge2 * globalAge3;
+          globalSumCheck = globalAge1 + globalAge2 + globalAge3;
+
+          globalVerificationText = (globalProductCheck === globalProduct && globalSumCheck === globalSum)
+            ? "✅ Verification Passed!"
+            : "❌ Verification Failed!";
+
+          console.log(`Real ages: ${globalAge1}, ${globalAge2}, ${globalAge3}`);
         }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 
-        // 🌟 Verify User Guess
-        function verifyGuess() {
-            userGuess1 = parseInt(document.getElementById('guess1').value);
-            userGuess2 = parseInt(document.getElementById('guess2').value);
-            userGuess3 = parseInt(document.getElementById('guess3').value);
+  function verifyGuess() {
+    userGuess1 = parseInt(document.getElementById("guess1").value);
+    userGuess2 = parseInt(document.getElementById("guess2").value);
+    userGuess3 = parseInt(document.getElementById("guess3").value);
 
-            userProduct = userGuess1 * userGuess2 * userGuess3;
-            userSum = userGuess1 + userGuess2 + userGuess3;
+    userProduct = userGuess1 * userGuess2 * userGuess3;
+    userSum = userGuess1 + userGuess2 + userGuess3;
 
-            if (userProduct === globalProduct && userSum === globalSum) {
-                userVerificationText = "✅ Correct Guess!";
-                showGif(); // 🎯 call your gif showing function
-            } else {
-                userVerificationText = "❌ Wrong Guess.";
-}
+    if (userProduct === globalProduct && userSum === globalSum) {
+      userVerificationText = "✅ Correct Guess!";
+      showGif();
+    } else {
+      userVerificationText = "❌ Wrong Guess.";
+    }
 
-    
+    document.getElementById("solution").innerText = `Real Solution: Ages are ${globalAge1}, ${globalAge2}, ${globalAge3}`;
+    document.getElementById("verification").innerText = globalVerificationText;
+    document.getElementById("userVerification").innerText = userVerificationText;
+  }
 
-            // Update display
-            document.getElementById('solution').innerText = 
-                `Real Solution: Ages are ${globalAge1}, ${globalAge2}, ${globalAge3}`;
+  function showGif() {
+    document.getElementById("pixelGif").style.display = "block";
+  }
 
-            document.getElementById('verification').innerText = globalVerificationText;
+  const closeBtn = document.getElementById("close-btn");
+  const openBtn = document.getElementById("open-btn");
+  const dialogueBox = document.getElementById("dialogue-box");
 
-            // Optional: show user guess check separately
-            document.getElementById('userVerification').innerText = userVerificationText;
-        }
+  closeBtn.addEventListener("click", () => {
+    dialogueBox.style.display = "none";
+    openBtn.classList.remove("hidden");
+  });
 
-        function showGif() {
-            document.getElementById('pixelGif').style.display = 'block';
-        }
-        
-        // 🌟 Auto-solve when page loads
-        window.onload = function() {
-            solveRiddle();
-        };
-    </script>
+  openBtn.addEventListener("click", () => {
+    dialogueBox.style.display = "flex";
+    openBtn.classList.add("hidden");
+  });
+
+  window.onload = () => {
+    solveRiddle();
+    openBtn.classList.add("hidden");
+  };
+</script>
+
 </body>
 </html>
