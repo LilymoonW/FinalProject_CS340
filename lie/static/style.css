@@ -14,7 +14,7 @@ header {
 }
 
 main {
-    padding: 2rem;
+    padding: 20px;
     max-width: 700px;
     margin: auto;
     background: white;
@@ -25,19 +25,24 @@ main {
 
 #clamContainer {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    justify-content: center; /* space-around*/
     margin: 2rem 0;
 }
 
 .clam {
     text-align: center;
     cursor: pointer;
+    margin: 10px;
+    padding: 10px;
 }
 
 .clam img {
     width: 100px;
     height: auto;
-    transition: transform 0.2s;
+    /* transition: transform 0.2s; */
+    display: block;
+    margin: 0 auto;
 }
 
 .clam:hover img {
@@ -45,8 +50,8 @@ main {
 }
 
 button {
-    margin: 0.5rem;
-    padding: 0.5rem 1rem;
+    margin: 0.10px;
+    padding: 0.3rem 1rem;
     background: #007bff;
     color: white;
     border: none;
