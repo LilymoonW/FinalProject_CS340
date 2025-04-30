@@ -5,30 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>River Crossing Game</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 </head>
 <body>
 
 <header>
-  <h1>River Crossing: Fox, Goose, and Lettuce</h1>
+  <h1>Waban Crossing: Fox, Goose, and Lettuce</h1>
 </header>
 
 <main>
-  <p>Help the farmer get the fox, goose, and lettuce safely across the river!</p>
+  <div class="story-container">
+    <p>
+      You received a mysterious letter from Alexa, instructing you to cross Lake Waban with your student project (fox), your emotional support goose, and a crucial head of lettuce.
+      <br><br>
+      The boat can only carry you (the student) and one item at a time. Be careful! If left unattended together, the fox would eat the goose, or the goose would eat the lettuce.
+      <br><br>
+      How can you cross safely without losing anything?
+    </p>
+  </div>
+  
+    
+
 
   <div id="riverbanks">
     <!-- Left Bank -->
     <div id="left-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
       <div id="fox" class="item" draggable="true">
-        <img src="assets/fox.png" alt="Fox">
+        <img src="assets/fox.png" alt="fox">
       </div>
       <div id="goose" class="item" draggable="true">
-        <img src="assets/goose.png" alt="Goose">
+        <img src="assets/goose.png" alt="goose">
       </div>
       <div id="lettuce" class="item" draggable="true">
-        <img src="assets/lettuce.png" alt="Lettuce">
+        <img src="assets/lettuce.png" alt="lettuce">
       </div>
-      <div id="farmer" class="item" draggable="true">
-        <img src="assets/farmer.png" alt="Farmer">
+      <div id="student" class="item" draggable="true">
+        <img src="assets/farmer.png" alt="student">
       </div>
     </div>
 
