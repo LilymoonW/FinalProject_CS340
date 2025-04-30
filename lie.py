@@ -288,23 +288,16 @@ def knight_knave6():
 # n = number of people
 def generate_instances(n):
     s = Solver()
-    ppl = []
 
     bools = []
     for i in range(n):
-        ppl.append(random.choice([True, False]))
         name = "p" + str(i)
         bools.append(Bool(name))
-        # print(ppl[i])
 
-    # print(bools)
-    # number of statements is n?
+    # number of statements is n
     for i in range(n):
         person1 = random.choice(bools)
         person2 = random.choice(bools)
-
-        # print(person1)
-        # print(person2)
 
         says_is_knave = random.choice([True, False])
 
@@ -327,7 +320,5 @@ def generate_instances(n):
         print(mod)
     else:
         generate_instances(n)
-        # print(res)
-    
 
 generate_instances(random.randint(3,5))
