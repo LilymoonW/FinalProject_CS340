@@ -1,16 +1,34 @@
 
 const assignments = {}
 
+const clamImages = {
+    blue: '/static/clam-blue.png',
+    pink: '/static/clam-pink.png',
+    yellow: '/static/clam-yellow.png',
+    green: '/static/clam-green.png',
+    purple: '/static/clam-purple.png'
+};
+
+const scallopImages = {
+    blue: '/static/scallop-blue.png',
+    pink: '/static/scallop-pink.png',
+    yellow: '/static/scallop-yellow.png',
+    green: '/static/scallop-green.png',
+    purple: '/static/scallop-purple.png'
+};
+
+const colors = ['blue', 'pink', 'yellow', 'green', 'purple'];
+
 async function fetchPuzzle() {
     try {
         const response = await fetch('http://127.0.0.1:5000/generate');
         const data = await response.json();
 
         const statementsDiv = document.getElementById('statements');
-        const clamContainer = document.getElementById('clamContainer');
+        document.getElementById('assignments').innerHTML = '';
         document.getElementById('result').innerHTML = '';
 
-        statementsDiv.innerHTML = '<h2>Statements:</h2><ul>' +
+        statementsDiv.innerHTML = '<h3>Statements:</h3><ul>' +
             data.statements.map(s => `<li>${s}</li>`).join('') +
             '</ul>';
         
@@ -19,57 +37,69 @@ async function fetchPuzzle() {
             assignments[k] = data.assignments[k]
         }
 
-        let count = 0;
-        clamContainer.innerHTML = '';
-        for (const key in assignments) {
-            const clamDiv = document.createElement('div')
-            clamDiv.className = 'clam'
-
-            const img = document.createElement('img')
-            const clamImages = ['clam-pink.png', 'clam-blue.png', 'clam-purple.png', 'clam-yellow.png', 'clam-green.png']
-            const clamsImage = clamImages[count]
-            img.src = '/static/' + clamsImage;
-            img.alt = 'Clam'
-            count = count + 1;
-
-            const nameP = document.createElement('p');
-            nameP.innerText = key;
-
-            const select = document.createElement('select')
-            select.id = key; // name of the clam
-
-            const option1 = document.createElement('option');
-            option1.value = 'Clam';
-            option1.innerText = 'Clam';
-
-            const option2 = document.createElement('option');
-            option2.value = 'Scallop';
-            option2.innerText = 'Scallop';
-
-            select.appendChild(option1);
-            select.appendChild(option2);
-
-            clamDiv.appendChild(img);
-            clamDiv.appendChild(nameP);
-            clamDiv.appendChild(select);
-            clamContainer.appendChild(clamDiv);
-        }
+        displayShellfish(Object.keys(assignments))
 
     } catch (error) {
         console.error('Error fetching puzzle:', error);
     }
 }
 
+function displayShellfish(names) {
+    const container = document.getElementById('clamContainer');
+    container.innerHTML = '';
+    let count = 0;
+    for (const name of names) {
+        const div = document.createElement('div');
+        div.className = 'clam';
+
+        const img = document.createElement('img');
+        const color = colors[count];
+        count = count + 1
+
+        img.src = clamImages[color];  // starts as a clam
+        img.dataset.name = name;
+        img.dataset.guess = 'clam';
+        img.dataset.color = color; // color for toggling
+        img.addEventListener('click', toggleShellfish);
+
+        const label = document.createElement('div');
+        label.textContent = name;
+
+        div.appendChild(img);
+        div.appendChild(label);
+        container.appendChild(div);
+    }
+}
+
+// Toggles between clam and scallop image
+function toggleShellfish(event) {
+    const img = event.target;
+    const color = img.dataset.color;
+
+    if (img.dataset.guess === 'clam') {
+        img.src = scallopImages[color];
+        img.dataset.guess = 'scallop';
+    } else {
+        img.src = clamImages[color];
+        img.dataset.guess = 'clam';
+    }
+}
+
 // Submit button calls to check the guesses. 
 function submitChoices() {
+    const container = document.getElementById('clamContainer');
+    const images = container.getElementsByTagName('img');
+
     let guesses = {}
     
-    for (const k in assignments) {
-        const guess = document.getElementById(k).value;
-        if (guess == 'Clam') {
-            guesses[k] = 'True';
+    for (const img of images) {
+        const name = img.dataset.name;
+        const guess = img.dataset.guess; 
+
+        if (guess == 'clam') {
+            guesses[name] = 'True';
         } else {
-            guesses[k] = 'False'
+            guesses[name] = 'False'
         }
     }
     makeGuess(guesses);
@@ -113,10 +143,7 @@ function seeSolution() {
 
 function hideSolution() {
     document.getElementById('assignments').innerHTML = '';
-    // assignmentsDiv.innerHTML = ''
-
     document.getElementById('result').innerHTML = '';
 }
 
-// Call it when page loads
 fetchPuzzle();
