@@ -9,11 +9,9 @@ CORS(app)
 # n = number of people
 def generate_instances(n):
     s = Solver()
-    # ppl = []
 
     bools = [] # maybe rename this
     for i in range(n):
-        # ppl.append(random.choice([True, False]))
         name = "Shellfish" + str(i)
         bools.append(Bool(name))
 
