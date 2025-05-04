@@ -1,4 +1,4 @@
-# 𓆉⋆｡˚⋆❀ 🐚🫧𓇼 ˖°SMT Wellesely Adventure 𓆉⋆｡˚⋆❀ 🐚🫧𓇼 ˖°
+# ⋆˚⋆❀ 🐚🫧𓇼 ˖°SMT Wellesely Adventure ⋆｡˚❀ 🐚🫧𓇼°
 <p align="center">
   <img src="https://github.com/user-attachments/assets/af51e851-bdbf-4fa7-a19d-401240af876d" width="300"/>
 </p>
