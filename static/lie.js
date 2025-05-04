@@ -125,6 +125,7 @@ function makeGuess(guesses) {
     if (correct) {
         resultElement.textContent = "Correct! You figured it out!";
         resultElement.style.color = "green";
+        
     } else {
         resultElement.textContent = "Incorrect. Try again!";
         resultElement.style.color = "red";
@@ -144,6 +145,11 @@ function seeSolution() {
 function hideSolution() {
     document.getElementById('assignments').innerHTML = '';
     document.getElementById('result').innerHTML = '';
+}
+
+function changeToAge() {
+    fetch('/next_from_lie', { method: 'POST' })
+        .then(() => window.location.href = '/age');
 }
 
 fetchPuzzle();

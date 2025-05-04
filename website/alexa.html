@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Waban Crossing: Mission Start</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -19,11 +20,11 @@
           <!-- This will get filled by JS -->
         </p>
       </div>
-      <img src="assets/alexa.png" alt="Alexa" class="character">
+      <img src="/static/assets/alexa.png" alt="Alexa" class="character">
     </div>
 
     <div class="button-container">
-      <button type="button" onclick="window.location.href='rivercrossing.html'">Yes</button>
+      <button type="button" onclick="  window.open('/river', '_blank')">Yes</button>
       <button type="button" class="no-button">No</button>
     </div>
   </main>

@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>River Crossing Game</title>
-  <link rel="stylesheet" href="rivercrossing.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='rivercrossing.css') }}">
+
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 </head>
@@ -29,23 +30,23 @@
     <!-- Left Bank -->
     <div id="left-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
       <div id="fox" class="item" draggable="true">
-        <img src="assets/fox.png" alt="fox">
+        <img src="/static/assets/fox.png" alt="fox">
       </div>
       <div id="goose" class="item" draggable="true">
-        <img src="assets/goose.png" alt="goose">
+        <img src="/static/assets/goose.png" alt="goose">
       </div>
       <div id="lettuce" class="item" draggable="true">
-        <img src="assets/lettuce.png" alt="lettuce">
+        <img src="/static/assets/lettuce.png" alt="lettuce">
       </div>
       <div id="student" class="item" draggable="true">
-        <img src="assets/farmer.png" alt="student">
+        <img src="/static/assets/farmer.png" alt="student">
       </div>
     </div>
 
     <!-- River and Boat -->
     <div id="river">
       <div id="boat" ondrop="dropIntoBoat(event)" ondragover="allowDrop(event)">
-        <img src="assets/boat.png" alt="Boat">
+        <img src="/static/assets/boat.png" alt="Boat">
       </div>
     </div>
 

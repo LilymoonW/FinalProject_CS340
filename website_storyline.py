@@ -153,16 +153,23 @@ def generate():
     return jsonify(result)
 
 
-# === Route 5: Home (start game) ===
+# === Flow: Home (start game) ===
 @app.route('/')
 def home():
     return render_template('index.html')
 
 
-@app.route('/age')
-def changeToPuzzle1():
-    return render_template('age.html')
+@app.route('/intro')
+def changeToIntro():
+    return render_template('alexa.html')
 
+@app.route('/river')
+def changeToPuzzle1():
+    return render_template('rivercrossing.html')
+
+@app.route('/age')
+def changeToPuzzle2():
+    return render_template('age.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
