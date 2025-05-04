@@ -3,7 +3,7 @@
   <img src="https://github.com/user-attachments/assets/af51e851-bdbf-4fa7-a19d-401240af876d" width="300"/>
 </p>
 
-This was created as part of our final project for Wellesley CS 340 project. Follows a interactive story where players naviagate through a series of word logic puzzzles. We model the word puzzles through formal verification tools **Z3** and **Alloy**. Our aim is to formally encode each puzzle’s constraints, verify solution correctness with solvers, and explore variations or extensions. At the end of the journey you are greeted with goose which will give you a **Pearl of Undecidability**.
+This was created as part of our final project for Wellesley CS 340 project. Follows a interactive story where players navigate through a series of word logic puzzles. We model the word puzzles through formal verification tools Z3 and Alloy. Our aim is to formally encode each puzzle’s constraints, verify solution correctness with solvers. At the end of the journey you are greeted with goose which will give you a **Pearl of Undecidability**.
    <img 
     src="https://github.com/user-attachments/assets/7b923448-b616-4467-ae06-9dafdc64ccc1" 
     alt="goose" 
