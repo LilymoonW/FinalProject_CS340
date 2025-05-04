@@ -9,8 +9,63 @@ This was created as part of our final project for Wellesley CS 340 project. Foll
     alt="goose" 
     width="60"
   />
-## How to Use
-How to install required tools (you can link to tool pages for the main instructions).
+##  How to Use
+
+We modeled puzzles using **Z3** and **Alloy**, and built an interactive front-end using **Flask** with connected HTML assets.
+
+###  Requirements
+
+- Python 3.7+
+- [Z3 Solver](https://github.com/Z3Prover/z3)
+  ```bash
+  pip install z3-solver
+  ```
+- [Alloy Analyzer](https://alloytools.org/) — required to run `.als` models
+
+---
+
+###  Running Puzzle Solvers
+
+Navigate to the `goals/` folder to run individual logic puzzles modeled in **Z3** or Alloy:
+
+```
+FinalProject_CS340/
+└── goals/
+    ├── age.py            # Age riddle in Z3
+    ├── lie.py            # Truth-teller puzzle in Z3
+    ├── mislabled.py      # Mislabeled box puzzle in Z3
+    └── river.als         # River crossing puzzle in Alloy
+```
+
+To run a Z3 puzzle:
+```bash
+python goals/age.py
+```
+
+To run the river crossing puzzle:
+- Download and open `river.als` in the Alloy Analyzer (requires installation of Alloy).
+
+---
+
+### Running the Interactive Game
+
+To play our interactive logic-based game built in **Flask**:
+
+1. Navigate to the project root.
+2. Run:
+
+```bash
+python website_storyline.py
+```
+
+3. Open your browser and go to:
+```
+http://127.0.0.1:5000
+```
+
+You’ll be able to interact with a story-driven puzzle experience combining logic, visuals, and dialogue.
+
+
 
 ##  Project Goals
 
