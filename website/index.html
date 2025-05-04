@@ -3,31 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Waban Crossing: Mission Start</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>The Alexa Files — Enter Your Info</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background-color: black;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+  </style>
 </head>
 <body>
+  <h1>The Alexa Files</h1>
+  <p>Before we start, tell me a bit about you…</p>
+  <input type="text" id="playerName" placeholder="Your Name">
+  <input type="text" id="dorm" placeholder="Your Dorm">
+  <input type="text" id="snack" placeholder="Favorite Snack">
+  <input type="text" id="major" placeholder="Your Major">
+  <br>
+  <button onclick="startGame()">Start Mission</button>
 
-<header>
-  <h1>The Wellesley Mission: Mission Start</h1>
-</header>
+  <script>
+    function startGame() {
+  const name = document.getElementById('playerName').value;
+  const dorm = document.getElementById('dorm').value;
+  const snack = document.getElementById('snack').value;
+  const major = document.getElementById('major').value;
 
-<main>
-  <div class="scene">
-    <img src="assets/science-center.png" alt="Science Center" class="background">
-    <img src="assets/alexa.png" alt="Alexa" class="character">
-    <div class="speech-bubble">
-      <p>I have a mission for you! It’s urgent — meet me at Lake Waban. Your skills are critical. Don’t waste a second!</p>
-    </div>
-  </div>
+  // Save to localStorage
+  localStorage.setItem('playerName', name);
+  localStorage.setItem('dorm', dorm);
+  localStorage.setItem('snack', snack);
+  localStorage.setItem('major', major);
 
-  <div class="button-container">
-    <a href="/Users/audreyshin/FinalProject_CS340/rivercrossing/rivercrossing.html">
-      <button type="button">Start Game</button>
-    </a>
-  </div>
-</main>
+  // Go to Alexa page
+  window.location.href = 'alexa.html';
+}
 
+  </script>
 </body>
 </html>

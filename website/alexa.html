@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waban Crossing: Mission Start</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>The Alexa Files</h1>
+  </header>
+
+  <main>
+    <div class="scene">
+      <div class="speech-bubble">
+        <p id="speechText">
+          <!-- This will get filled by JS -->
+        </p>
+      </div>
+      <img src="assets/alexa.png" alt="Alexa" class="character">
+    </div>
+
+    <div class="button-container">
+      <button type="button" onclick="window.location.href='rivercrossing.html'">Yes</button>
+      <button type="button" class="no-button">No</button>
+    </div>
+  </main>
+
+  <script>
+    window.onload = function() {
+      const name = localStorage.getItem('playerName') || 'mystery student';
+      const dorm = localStorage.getItem('dorm') || 'some dorm';
+      const snack = localStorage.getItem('snack') || 'snacks';
+      const major = localStorage.getItem('major') || 'undecided major';
+
+      const message = `Hey, ${name}, I hope you brought some ${snack}! As a ${major} major, you’re perfect for this. So… confession: I’m magical. Yeah, I know, you thought my superpower was modeling and teaching, but no, I actually have real superpowers. And right now, I need your help. Your first task is simple: go to Lake Waban at 9pm tonight. Don't be late. I can’t explain everything yet (top secret magical stuff, obviously), but trust me, you’ll know what to do when you get there. Just be ready. Are you ready to help me out?`;
+
+      document.getElementById('speechText').innerText = message;
+    };
+  </script>
+</body>
+</html>

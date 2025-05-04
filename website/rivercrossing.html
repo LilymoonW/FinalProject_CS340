@@ -4,26 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>River Crossing Game</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="rivercrossing.css" />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 </head>
 <body>
 
 <header>
-  <h1>Waban Crossing: Fox, Goose, and Lettuce</h1>
+  <h1>Stage 1: Waban Crossing ~ Fox, Goose, and Lettuce</h1>
 </header>
 
 <main>
   <div class="story-container">
-    <p>
-      You received a mysterious letter from Alexa, instructing you to cross Lake Waban with your student project (fox), your emotional support goose, and a crucial head of lettuce.
-      <br><br>
-      The boat can only carry you (the student) and one item at a time. Be careful! If left unattended together, the fox would eat the goose, or the goose would eat the lettuce.
-      <br><br>
-      How can you cross safely without losing anything?
+    <p id="storyText">
+      <!-- The personalized message will go here -->
     </p>
   </div>
+  
   
     
 
@@ -60,7 +57,7 @@
 
   <div class="button-container">
     <button type="button" onclick="moveBoat()">Move Boat!</button>
-    <button type="button" onclick="resetGame()">Reset Game</button> <!-- NEW RESET BUTTON -->
+    <button type="button" onclick="resetGame()">Reset Stage</button> <!-- NEW RESET BUTTON -->
   </div>
   
 
@@ -68,6 +65,24 @@
 
 </main>
 
-<script src="script.js"></script>
+<script>
+  window.onload = function() {
+    const name = localStorage.getItem('playerName') || 'mystery student';
+    const dorm = localStorage.getItem('dorm') || 'some dorm';
+  
+    const story = `After traveling from ${dorm} to Lake Waban, you find a handwritten note waiting. 
+  <br><br>
+  ‘You made it... good. Here’s what you need to do next.
+  <br><br>
+  You need to get across the lake with your fox, your emotional support goose, and a very important head of lettuce. 
+  The boat can only carry you and one item at a time. But be careful — if you leave the fox alone with the goose, 
+  or the goose alone with the lettuce, well… let’s just say things will get messy.
+  <br><br>
+  I’m counting on you to figure this out. Good luck… and remember, think ahead!’`;
+  
+    document.getElementById('storyText').innerHTML = story;
+  };
+  </script>
+  
 </body>
 </html>
