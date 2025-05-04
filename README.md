@@ -13,7 +13,7 @@ This was created as part of our final project for Wellesley CS 340 project. Foll
 
 We modeled puzzles using **Z3** and **Alloy**, and built an interactive front-end using **Flask** with connected HTML assets.
 
-###  Requirements
+###  ────୨ৎ──── Requirements ────୨ৎ────
 
 - Python 3.7+
 - [Z3 Solver](https://github.com/Z3Prover/z3)
@@ -24,7 +24,7 @@ We modeled puzzles using **Z3** and **Alloy**, and built an interactive front-en
 
 ---
 
-###  Running Puzzle Solvers
+### ────୨ৎ──── Running Puzzle Solvers ────୨ৎ────
 
 Navigate to the `goals/` folder to run individual logic puzzles modeled in **Z3** or Alloy:
 
@@ -47,7 +47,7 @@ To run the river crossing puzzle:
 
 ---
 
-### Running the Interactive Game
+### ────୨ৎ──── Running the Interactive Game ────୨ৎ────
 
 To play our interactive logic-based game built in **Flask**:
 
@@ -66,8 +66,9 @@ http://127.0.0.1:5000
 You’ll be able to interact with a story-driven puzzle experience combining logic, visuals, and dialogue.
 
 
+---
 
-##  Project Goals
+## ⋆.˚ ☼⋆𓇼｡𖦹˙༄.° Project Goals ⋆.˚ ☼⋆𓇼｡𖦹˙༄.°
 
 
 We focus on three categories:
@@ -149,7 +150,7 @@ For the **Age puzzle**, we assumed that the product is between 1 to 100 and the 
 
 ---
 
-##  Goal Evolution
+##  ⋆.˚ ☼⋆𓇼｡𖦹˙༄.° Goal Evolution ⋆.˚ ☼⋆𓇼｡𖦹˙༄.°
 Initially we were only planning on adding 3 riddles but added another mislabled boxes to expand on the complexity of our project.
 
 We initially thought the **river crossing puzzle** would be too difficult to model, especially in **Z3**, due to challenges in representing step-by-step transitions. However, switching to **Alloy** proved effective, and we learned:
