@@ -38,6 +38,7 @@ async function fetchPuzzle() {
         }
 
         displayShellfish(Object.keys(assignments))
+        console.log(assignments)
 
     } catch (error) {
         console.error('Error fetching puzzle:', error);
@@ -125,7 +126,7 @@ function makeGuess(guesses) {
     if (correct) {
         resultElement.textContent = "Correct! You figured it out!";
         resultElement.style.color = "green";
-        
+        changeToAge();
     } else {
         resultElement.textContent = "Incorrect. Try again!";
         resultElement.style.color = "red";
@@ -133,13 +134,16 @@ function makeGuess(guesses) {
 }
 
 function seeSolution() {
-    const assignmentsDiv = document.getElementById('assignments');
+    // const assignmentsDiv = document.getElementById('assignments');
 
-    assignmentsDiv.innerHTML = '<h2>Assignments:</h2><ul>' +
-    Object.entries(assignments)
+    console.log(Object.entries(assignments)
         .map(([person, value]) => `<li>${person}: ${value}</li>`)
-        .join('') +
-    '</ul>';
+        .join(''))
+    // assignmentsDiv.innerHTML = '<h2>Assignments:</h2><ul>' +
+    // Object.entries(assignments)
+    //     .map(([person, value]) => `<li>${person}: ${value}</li>`)
+    //     .join('') +
+    // '</ul>';
 }
 
 function hideSolution() {
