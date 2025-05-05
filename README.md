@@ -1,4 +1,4 @@
-# ⋆˚⋆❀ 🐚🫧𓇼 ˖°SMT Wellesely Adventure ⋆｡˚❀ 🐚🫧𓇼°
+# ⋆˚⋆❀ 🐚🫧𓇼 ˖°SMT Wellesley Adventure ⋆｡˚❀ 🐚🫧𓇼°
 <p align="center">
   <img src="https://github.com/user-attachments/assets/af51e851-bdbf-4fa7-a19d-401240af876d" width="300"/>
 </p>
@@ -124,14 +124,13 @@ Our Alloy model includes:
 This design prevents non-progressive behavior and ensures solution correctness.
 
 ### ⋆༺𓆩⚔𓆪༻⋆ Lying and Truth-Teller Puzzles ⋆༺𓆩⚔𓆪༻⋆
-[JESSICA]
+We used Z3 for the lying and truth-teller puzzles because they involve logical implications which are avaliable in Z3. 
+- why not Alloy? Because Alloy mainly involves using sets which is not necessary for simply logic puzzles such as this one. 
 
 ###  (❀ˆᴗˆ)(•́ᴗ•̀✿) Age Riddles (❀ˆᴗˆ)(•́ᴗ•̀✿)
 We chose Z3 for age riddles because they involve arithmetic constraints like sums, products, and inequalities between variables (e.g., "The sum of their ages is 13").
 - Why Z3? It excels at solving numerical relationships using its built-in support for integer arithmetic and constraint solving.
 - Why not Alloy? Alloy’s modeling of integers is limited and more cumbersome for arithmetic-heavy problems.
-
-
 
 ### 4. ˙ ✩°˖🍊 ⋆｡˚꩜ Mislabeled Boxes ˙ ✩°˖ 🍎 ⋆｡˚꩜
 This puzzle is purely logical, with constraints like "the label is always wrong" and deduction from a single observation.
@@ -145,6 +144,8 @@ This puzzle is purely logical, with constraints like "the label is always wrong"
 
 For the **River Crossing Puzzle**, we assumed it was solvable within **100 steps**, despite the fact that the optimal solution only requires **7 steps**.  
 We selected 100 arbitrarily to ensure that Alloy’s bounded analysis wouldn’t miss any valid trace.
+
+For the **Lying puzzle**, we limited the scope to only generate puzzles with the number of people between and including 3 and 5. This limits the number of puzzles we are able to generate. 
 
 For the **Age puzzle**, we assumed that the product is between 1 to 100 and the sum of ages to be between 2 and 50. This limits the scope of the number of random problems our model can find.
 
