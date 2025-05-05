@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +7,18 @@
     <title>Ocean Teleportation</title>
     <link rel="stylesheet" href="/static/lie.css">
 </head>
-<body class="background-div-intro scene1">
 
-    <main>
+<body class="background-div-intro scene0">
+    <!-- Whirlpool textbox overlay -->
+    <div id="whirlpoolOverlay">
+        <p style="font-size: 1.5rem; font-weight: bold;">A mysterious whirlpool suddenly appears...</p>
+        <button onclick="startWhirlpoolTransition()">Enter the Whirlpool</button>
+    </div>
+
+    <!-- Animated gif layer (hidden initially) -->
+    <div id="whirlpoolGif"></div>
+
+    <main style="display: none;">
 
         <!-- Scene 1 -->
         <div id="scene1" class="scene active">
@@ -39,12 +50,26 @@
     </main>
 
     <script>
+
         function showScene(sceneNumber) {
             document.querySelectorAll('.scene').forEach(div => div.classList.remove('active'));
             document.getElementById('scene' + sceneNumber).classList.add('active');
 
             const bg = document.querySelector('body');
             bg.className = 'background-div-intro scene' + sceneNumber;
+        }
+
+        function startWhirlpoolTransition() {
+            document.getElementById('whirlpoolOverlay').style.display = 'none';
+            document.getElementById('whirlpoolGif').style.display = 'block';
+
+            setTimeout(() => {
+                // Hide gif, show main content
+                document.getElementById('whirlpoolGif').style.display = 'none';
+                document.querySelector('main').style.display = 'block';
+
+                showScene(1);
+            }, 2350);
         }
     </script>
 
