@@ -463,71 +463,75 @@ function verifyGuess() {
 }
 
 function handleWrongAnswer(backgroundUrl = 'none') {
-
-    setTimeout(() => {
-      const container = document.getElementById("background-container");
-  const dialogueBox = document.getElementById("dialogue-box");
-
-  // Show failure message
-  document.getElementById("story-text").innerText = "You did the puzzle wrong...";
-  if (backgroundUrl !== 'none') {
-    const img = new Image();
-    img.src = backgroundUrl;
-    img.onload = () => {
-      container.style.backgroundImage = `url('${backgroundUrl}')`;
-      container.style.transition = "background-image 0.5s ease-in-out";
-    };
-    img.onerror = () => {
-      console.error(`Failed to load image: ${backgroundUrl}`);
-    };
-    }
-  }, 3000);
-  // Hide selection container if visible
-  const selectionContainer = document.getElementById("selection-container");
-  if (selectionContainer) {
-    selectionContainer.style.display = "none";
-  }
-
   setTimeout(() => {
-    // Add shake effect
-    container.classList.add("shake");
+    const container = document.getElementById("background-container");
+    const dialogueBox = document.getElementById("dialogue-box");
+
+    // Show failure message
+    document.getElementById("story-text").innerText = "You did the puzzle wrong...";
+    if (backgroundUrl !== 'none') {
+      const img = new Image();
+      img.src = backgroundUrl;
+      img.onload = () => {
+        container.style.backgroundImage = `url('${backgroundUrl}')`;
+        container.style.transition = "background-image 0.5s ease-in-out";
+      };
+      img.onerror = () => {
+        console.error(`Failed to load image: ${backgroundUrl}`);
+      };
+    }
+
+    // Hide selection container if visible
+    const selectionContainer = document.getElementById("selection-container");
+    if (selectionContainer) {
+      selectionContainer.style.display = "none";
+    }
 
     setTimeout(() => {
-      // Remove shake and start transition
-      container.classList.remove("shake");
-      container.style.transition = "opacity 1s ease-in-out";
-      dialogueBox.style.transition = "opacity 1s ease-in-out";
-
-      // Fade out container and dialogue
-      container.style.opacity = "0";
-      dialogueBox.style.opacity = "0";
+      // Add shake effect
+      container.classList.add("shake");
 
       setTimeout(() => {
-        // Hide elements and change to game over background
-        container.style.display = "none";
-        dialogueBox.style.display = "none";
-        document.body.style.backgroundImage = "url('/static/ending-screen.png')";
-        document.body.style.transition = "background-image 1s ease-in-out";
+        // Remove shake and start transition
+        container.classList.remove("shake");
+        container.style.transition = "opacity 1s ease-in-out";
+        dialogueBox.style.transition = "opacity 1s ease-in-out";
 
-        // Show game over message after transition
+        // Fade out container and dialogue
+        container.style.opacity = "0";
+        dialogueBox.style.opacity = "0";
+
         setTimeout(() => {
-          dialogueBox.style.display = "flex";
-          dialogueBox.style.opacity = "1";
-          document.getElementById("story-text").innerText =
-            "The room collapses around you...";
+          // Hide elements and change to game over background
+          container.style.display = "none";
+          dialogueBox.style.display = "none";
+          document.body.style.backgroundImage = "url('/static/ending-screen.png')";
+          document.body.style.transition = "background-image 1s ease-in-out";
+
+          // Show game over message after transition
           setTimeout(() => {
-            const dialogueBox = document.getElementById("dialogue-box");
-            if (dialogueBox) {
-              dialogueBox.style.display = "none";
-            }
-          }, 1000);
-        }, 1000);
-      }, 1000);
-    }, 1000); // Shake duration
-  }, 2000); // Initial delay
+            dialogueBox.style.display = "flex";
+            dialogueBox.style.opacity = "1";
+            document.getElementById("story-text").innerText =
+              "The room collapses around you...";
 
-  window.open('/home', '_self'); // Open in the same tab
-
+            setTimeout(() => {
+              document.getElementById("story-text").innerText =
+                "You feel a strange sensation as everything fades to black...";
+              
+              setTimeout(() => {
+                const dialogueBox = document.getElementById("dialogue-box");
+                if (dialogueBox) {
+                  dialogueBox.style.display = "none";
+                }
+                window.open('/home', '_self'); // Open in the same tab
+              }, 2000); // Delay before switching to home
+            }, 2000); // Delay before showing fade to black message
+          }, 1000); // Delay before showing game over message
+        }, 1000); // Delay before hiding elements
+      }, 1000); // Shake duration
+    }, 2000); // Initial delay
+  }, 3000); // Delay before starting the sequence
 }
      
 function showMismatchedBoxes() {
