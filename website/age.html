@@ -463,7 +463,9 @@ function verifyGuess() {
 }
 
 function handleWrongAnswer(backgroundUrl = 'none') {
-  const container = document.getElementById("background-container");
+
+    setTimeout(() => {
+      const container = document.getElementById("background-container");
   const dialogueBox = document.getElementById("dialogue-box");
 
   // Show failure message
@@ -478,8 +480,8 @@ function handleWrongAnswer(backgroundUrl = 'none') {
     img.onerror = () => {
       console.error(`Failed to load image: ${backgroundUrl}`);
     };
-  }
-
+    }
+  }, 3000);
   // Hide selection container if visible
   const selectionContainer = document.getElementById("selection-container");
   if (selectionContainer) {
@@ -523,6 +525,9 @@ function handleWrongAnswer(backgroundUrl = 'none') {
       }, 1000);
     }, 1000); // Shake duration
   }, 2000); // Initial delay
+
+  window.open('/home', '_self'); // Open in the same tab
+
 }
      
 function showMismatchedBoxes() {
@@ -548,6 +553,7 @@ function showMismatchedBoxes() {
             document.getElementById("choice-box").style.display = "flex";
           });
       }
+    
 
 function peekBox(boxId) {
   fetch(`/peek/${boxId}`)
@@ -624,7 +630,6 @@ function submitBoxGuess() {
       } else {
         document.getElementById("choice-box").style.display = "none"; 
         handleWrongAnswer('none')
-
       }
     });
 }

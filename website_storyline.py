@@ -160,6 +160,10 @@ def generate():
 def home():
     return render_template('index.html')
 
+@app.route('/home')
+def returnHome():
+    return render_template('index.html') 
+
 @app.route('/intro')
 def changeToIntro():
     return render_template('alexa.html')
