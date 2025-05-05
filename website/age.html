@@ -130,11 +130,14 @@
         margin: 5px;
         font-size: 1.5em;
       }
-
       #pixelGif {
         display: none;
         width: 200px;
         image-rendering: pixelated;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
 
       #choice-box {
@@ -599,36 +602,55 @@ function submitBoxGuess() {
           setTimeout(() => {
             container.classList.remove("shake");
             container.style.transition = "opacity 1s ease-in-out, background-image 1s ease-in-out";
-            container.style.backgroundImage = "url('/static/final_room.png')";
+            container.style.backgroundImage = "url('/static/final-clam-room.png')";
             container.style.border = "3px solid goldenrod";
-            document.body.style.backgroundImage = "url('/static/treasure_bg.png')";
+            document.body.style.backgroundImage = "url('/static/brick.png')";
 
             setTimeout(() => {
               dialogueBox.style.display = "flex";
               dialogueBox.style.opacity = "1";
+              showGif();
               document.getElementById("story-text").innerText =
-                "You've entered the final chamber. A treasure lies ahead, but one last riddle blocks your way...";
+                "You've completed the adventure! A goose appears and spits out a pearl..";
 
               document.getElementById("choice-box").innerHTML = `
-                <button onclick="finalPuzzle()">Approach the Treasure</button>
+                <button onclick="finalPuzzle()">Grab the pearl</button>
               `;
               document.getElementById("choice-box").style.display = "flex";
             }, 1000);
           }, 1000);
         }, 1500);
+        
       } else {
         document.getElementById("choice-box").style.display = "none"; 
         handleWrongAnswer('none')
+
       }
     });
 }
 
 function finalPuzzle() {
-  document.getElementById("story-text").innerText =
-    "A voice echoes: 'To claim the prize, solve this final question... (coming soon!)'";
+  document.getElementById("pixelGif").style.display = "none";
+  document.getElementById("story-text").innerText = 
+    "A voice echoes: 'You've obtained the pearl of undecidability!'";
   document.getElementById("choice-box").style.display = "none";
-}
+  
+  setTimeout(() => {
+    document.getElementById("story-text").innerText = 
+      "The voice echoes again: 'Close your eyes and you will go back home...'";
+    
+    setTimeout(() => {
+      document.body.style.backgroundColor = "black";
+      document.body.innerHTML = ""; // Clear all content on the page
 
+      
+      setTimeout(() => {
+      window.open('/end', '_self'); // Open in the same tab
+        ;
+      }, 2000);
+    }, 3000);
+  }, 3000);
+}
       function showGif() {
         document.getElementById("pixelGif").style.display = "block";
       }
