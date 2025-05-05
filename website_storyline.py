@@ -1,0 +1,184 @@
+# Authored By Lilymoon Whalen
+from flask import Flask, jsonify, render_template, session, request
+from z3 import *
+import random
+
+app = Flask(__name__, template_folder='website')
+app.secret_key = 'super-secret-key'  # Required for session storage
+
+
+# === Route 1: Age Riddle ===
+@app.route('/solve')
+def solve():
+    result = solve_random_age_riddle()
+    return jsonify(result)
+
+def solve_random_age_riddle():
+    age1 = Int('age1')
+    age2 = Int('age2')
+    age3 = Int('age3')
+
+    while True:
+        solver = Solver()
+        random_product = random.randint(1, 100)
+        random_sum = random.randint(3, 50)
+
+        solver.add(age1 > 0, age2 > 0, age3 > 0)
+        solver.add(age1 * age2 * age3 == random_product)
+        solver.add(age1 + age2 + age3 == random_sum)
+
+        if solver.check() == sat:
+            model = solver.model()
+            return {
+                "product": random_product,
+                "sum": random_sum,
+                "ages": [model[age1].as_long(), model[age2].as_long(), model[age3].as_long()]
+            }
+
+
+# === Route 2: Mismatched Boxes Setup ===
+@app.route('/mismatched')
+def mismatched():
+    contents = ['Pink Pearls', 'White Pearls', 'Mixed Pearls']
+    labels = ['Pink Pearls', 'White Pearls', 'Mixed Pearls']
+
+    box1, box2, box3 = Ints('box1 box2 box3')
+    s = Solver()
+    s.add(Distinct(box1, box2, box3))
+    s.add(And(box1 >= 0, box1 <= 2))
+    s.add(And(box2 >= 0, box2 <= 2))
+    s.add(And(box3 >= 0, box3 <= 2))
+
+    random_labels = random.sample(range(3), 3)
+    s.add(box1 != random_labels[0])
+    s.add(box2 != random_labels[1])
+    s.add(box3 != random_labels[2])
+
+    if s.check() == sat:
+        m = s.model()
+        box_assignments = [m[box1].as_long(), m[box2].as_long(), m[box3].as_long()]
+        session['true_contents'] = box_assignments
+        session['labels'] = random_labels
+
+        return jsonify([
+            {"box": i + 1, "label": labels[random_labels[i]]}
+            for i in range(3)
+        ])
+    else:
+        return jsonify({"error": "No solution"}), 500
+
+
+# === Route 3: Peek into a box ===
+@app.route('/peek/<int:box_id>')
+def peek_box(box_id):
+    contents = ['Pink Pearls', 'White Pearls', 'Mixed Pearls']
+    true_contents = session.get('true_contents', [None, None, None])
+
+    if 1 <= box_id <= 3 and true_contents[box_id - 1] is not None:
+        actual = true_contents[box_id - 1]
+        return jsonify({"box": box_id, "actual": contents[actual]})
+    return jsonify({"error": "Invalid box ID"}), 400
+
+
+# === Route 4: Submit guesses ===
+@app.route('/submit-guess', methods=['POST'])
+def submit_guess():
+    contents = ['Pink Pearls', 'White Pearls', 'Mixed Pearls']
+    true_contents = session.get('true_contents', [])
+    guess = request.json.get('guess', [])
+
+    if not guess or len(guess) != 3 or not true_contents:
+        return jsonify({"result": "invalid", "correct": False})
+
+    correct = all(contents[true_contents[i]] == guess[i] for i in range(3))
+    return jsonify({"result": "submitted", "correct": correct})
+
+
+# === Lie Puzzle ===
+# n = number of people
+def generate_instances(n):
+    s = Solver()
+
+    bools = [] # maybe rename this
+    for i in range(n):
+        name = "Shellfish" + str(i)
+        bools.append(Bool(name))
+
+    statements = []
+
+    # number of statements is n
+    for i in range(n):
+        person1 = random.choice(bools)
+        person2 = random.choice(bools)
+
+        says_is_knave = random.choice([True, False])
+
+        # if person 1 says that person 2 is a scallop (lie)
+        if says_is_knave:
+            t = str(person1) + " says that " + str(person2) + " is a Scallop."
+            s.add(Implies(person1, Not(person2)))
+            s.add(Implies(Not(person1), person2))
+
+        # if person 1 says that person 2 is a clam (truth)
+        else:
+            t = str(person1) + " says that " + str(person2) + " is a Clam."
+            s.add(Implies(person1, person2))
+            s.add(Implies(Not(person1), Not(person2)))
+
+        statements.append(t)
+
+    res = s.check()
+
+    if res == sat:
+        mod = s.model()
+        assignments = {}
+        for v in mod:
+            assignments[str(v)] = str(mod[v])
+
+        for i in range(n):
+            n = "Shellfish" + str(i)
+            if(n not in assignments.keys()):
+                assignments[n] = "Both"
+        result = {
+            "statements": statements,
+            "assignments": assignments
+        }
+        return result
+    else:
+        return generate_instances(n)
+
+# === Route 5: generate lie puzzles===
+@app.route('/generate')
+def generate():
+    n = random.randint(3,5)
+    result = generate_instances(n)
+    return jsonify(result)
+
+
+# === Flow: Home (start game) ===
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/intro')
+def changeToIntro():
+    return render_template('alexa.html')
+
+@app.route('/river')
+def changeToPuzzle1():
+    return render_template('rivercrossing.html')
+
+@app.route('/age')
+def changeToPuzzle2():
+    return render_template('age.html')
+
+@app.route('/lie-intro')
+def changeToPuzzle3Intro():
+    return render_template('lie_intro.html')
+
+@app.route('/lie')
+def changeToPuzzle3():
+    return render_template('lie.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)

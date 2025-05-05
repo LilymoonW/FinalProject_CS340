@@ -38,6 +38,7 @@ async function fetchPuzzle() {
         }
 
         displayShellfish(Object.keys(assignments))
+        console.log(assignments)
 
     } catch (error) {
         console.error('Error fetching puzzle:', error);
@@ -125,20 +126,74 @@ function makeGuess(guesses) {
     if (correct) {
         resultElement.textContent = "Correct! You figured it out!";
         resultElement.style.color = "green";
+
+        const bg = document.querySelector('.background-div-lie');
+        bg.classList.add('successful');
+
+        document.getElementById("successBox").style.display = "block";
+
+        const main = document.querySelector('main');
+        main.style.display = 'none';
+
+        // setTimeout(() => {
+        //     changeToAge(); // goes to age puzzle
+        // }, 2000);
+
+        
     } else {
         resultElement.textContent = "Incorrect. Try again!";
         resultElement.style.color = "red";
+
+        const bg = document.querySelector('.background-div-lie');
+        bg.classList.add('game-over');
+
+        const main = document.querySelector('main');
+        main.style.display = 'none';
+
+        setTimeout(() => {
+            window.location.href = '/';
+            // window.open('/', '_blank'); //goes to back to the start page. 
+        }, 2000);
     }
 }
 
-function seeSolution() {
-    const assignmentsDiv = document.getElementById('assignments');
+function changeToAge() {
+    fetch('/next_from_lie', { method: 'POST' })
+        .then(() => window.location.href = '/age');
+}
 
-    assignmentsDiv.innerHTML = '<h2>Assignments:</h2><ul>' +
-    Object.entries(assignments)
+function goToStart() {
+    fetch('/next_from_lie', { method: 'POST' })
+        .then(() => window.location.href = '/age');
+}
+
+function playGifAndRedirect() {
+    // Hide everything else
+    document.querySelector('main').style.display = 'none';
+    document.getElementById('successBox').style.display = 'none';
+
+    // Swap background to GIF
+    const bg = document.querySelector('.background-div-lie');
+    bg.classList.add('transition-gif');
+
+    // After ~3 seconds (or however long your gif lasts), redirect
+    setTimeout(() => {
+        window.location.href = '/age';
+    }, 1500); // adjust this to match the length of your gif in ms
+}
+
+// no need
+function seeSolution() {
+    // const assignmentsDiv = document.getElementById('assignments');
+
+    console.log(Object.entries(assignments)
         .map(([person, value]) => `<li>${person}: ${value}</li>`)
-        .join('') +
-    '</ul>';
+        .join(''))
+    // assignmentsDiv.innerHTML = '<h2>Assignments:</h2><ul>' +
+    // Object.entries(assignments)
+    //     .map(([person, value]) => `<li>${person}: ${value}</li>`)
+    //     .join('') +
+    // '</ul>';
 }
 
 function hideSolution() {

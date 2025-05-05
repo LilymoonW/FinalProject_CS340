@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ocean Teleportation</title>
+    <link rel="stylesheet" href="/static/lie.css">
+</head>
+<body class="background-div-intro scene1">
+
+    <main>
+
+        <!-- Scene 1 -->
+        <div id="scene1" class="scene active">
+            <p class="intro-text">You find yourself beneath the ocean, surrounded by strange talking shellfish.</p>
+            <p class="res">They seem to be arguing about the truth...</p>
+            <div class="transition-button">
+                <button onclick="showScene(2)">Investigate the argument</button>
+            </div>
+        </div>
+
+        <!-- Scene 2 -->
+        <div id="scene2" class="scene">
+            <p class="intro-text">One clam begins to glow brightly.</p>
+            <p class="res">“Only the honest may proceed,” it booms, as a swirling portal opens.</p>
+            <div class="transition-button">
+                <button onclick="showScene(3)">Step into the portal</button>
+            </div>
+        </div>
+
+        <!-- Scene 3 -->
+        <div id="scene3" class="scene">
+            <p class="intro-text">A flash of light blinds you. You feel your body spinning...</p>
+            <p class="res">When you open your eyes, you're somewhere new.</p>
+            <div class="transition-button">
+                <a href="/lie"><button>Wake up</button></a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function showScene(sceneNumber) {
+            document.querySelectorAll('.scene').forEach(div => div.classList.remove('active'));
+            document.getElementById('scene' + sceneNumber).classList.add('active');
+
+            const bg = document.querySelector('body');
+            bg.className = 'background-div-intro scene' + sceneNumber;
+        }
+    </script>
+
+</body>
+</html>
