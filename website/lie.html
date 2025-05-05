@@ -7,11 +7,11 @@
 </head>
 <body>
 
-    <div class = "background-div">
+    <div class = "background-div-lie">
 
-        <header>
+        <!-- <header>
             <h1>Clams and Scallops</h1>
-        </header>
+        </header> -->
 
         <main>
             <p>Below are multiple shellfish. Each is either a Clam (Truth-teller) or a Scallop (Liar).  
@@ -40,9 +40,9 @@
                 <button type="button" onclick = "submitChoices()">Submit</button>
             </div>
 
-            <div class = "button-container"> 
+            <!-- <div class = "button-container"> 
                 <button type="button" onclick = "fetchPuzzle()">New Puzzle</button>
-            </div>
+            </div> -->
 
             <!-- put this in the console, die if lose. -->
             <!-- <div class = "button-container"> 
@@ -51,7 +51,21 @@
             </div> -->
 
             <div id="assignments"></div>
+
         </main>
+
+        <!-- Success message and Continue button -->
+        <div class="success" id="successBox" style="display: none; text-align: center; margin-top: 2rem;">
+            <p style="font-size: 1.5rem; font-weight: bold;">You did it!</p>
+            <p>Are you ready for the next puzzle?</p>
+            <button onclick="playGifAndRedirect()">Continue</button>
+        </div>
+
+
+        <div class="clam-dive" id="successBox" style="display: none; text-align: center; margin-top: 2rem;">
+            <img src="/static/clam-dive.gif" width="300">
+            <!-- <button onclick="changeToAge()">Continue</button> -->
+        </div>
 
     </div>
 

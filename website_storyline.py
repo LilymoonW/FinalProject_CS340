@@ -94,6 +94,7 @@ def submit_guess():
     return jsonify({"result": "submitted", "correct": correct})
 
 
+# === Lie Puzzle ===
 # n = number of people
 def generate_instances(n):
     s = Solver()
@@ -146,6 +147,7 @@ def generate_instances(n):
     else:
         return generate_instances(n)
 
+# === Route 5: generate lie puzzles===
 @app.route('/generate')
 def generate():
     n = random.randint(3,5)
@@ -158,7 +160,6 @@ def generate():
 def home():
     return render_template('index.html')
 
-
 @app.route('/intro')
 def changeToIntro():
     return render_template('alexa.html')
@@ -170,6 +171,10 @@ def changeToPuzzle1():
 @app.route('/age')
 def changeToPuzzle2():
     return render_template('age.html')
+
+@app.route('/lie-intro')
+def changeToPuzzle3Intro():
+    return render_template('lie_intro.html')
 
 @app.route('/lie')
 def changeToPuzzle3():

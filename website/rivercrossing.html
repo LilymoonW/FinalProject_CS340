@@ -216,7 +216,11 @@
         rightBank.includes("goose") &&
         rightBank.includes("lettuce")) {
       document.getElementById("message").textContent = "🎉 You safely crossed Lake Waban! Alexa is proud of you.";
-      window.open('/lie', '_blank');
+      // window.open('/lie-intro', '_blank');
+      setTimeout(() => {
+        window.location.href = '/lie-intro';
+      }, 1500);
+      
     }
   }
 
