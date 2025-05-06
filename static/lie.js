@@ -21,7 +21,7 @@ const colors = ['blue', 'pink', 'yellow', 'green', 'purple'];
 
 async function fetchPuzzle() {
     try {
-        const response = await fetch('http://127.0.0.1:5000/generate');
+        const response = await fetch('/generate');
         const data = await response.json();
 
         const statementsDiv = document.getElementById('statements');

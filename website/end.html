@@ -1,2 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waban Crossing: Mission Complete</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-window.open('/home', '_self'); // Open in the same tab
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>The Alexa Files</h1>
+  </header>
+
+  <main>
+    <div class="scene">
+      <div class="speech-bubble">
+        <p id="endMessage">
+        </p>
+      </div>
+      <img src="/static/assets/alexa.png" alt="Alexa" class="character">
+    </div>
+
+    <div class="button-container">
+      <button type="button" onclick="window.open('/', '_self')">Play Again</button>
+    </div>
+  </main>
+
+  <script>
+    window.onload = function() {
+      const name = localStorage.getItem('playerName') || 'mystery student';
+      const dorm = localStorage.getItem('dorm') || 'some dorm';
+
+      const message = `Congrats, ${name} from ${dorm}! You’ve finished The Alexa Files! Thanks for helping save Waban. See you on your next adventure!`;
+
+      document.getElementById('endMessage').innerText = message;
+    };
+  </script>
+</body>
+</html>

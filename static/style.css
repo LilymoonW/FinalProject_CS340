@@ -8,11 +8,12 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  padding-top: 80px;
 }
 
 header {
@@ -28,7 +29,7 @@ header {
   position: relative;
   width: 100%;
   max-width: 800px;
-  height: 70%; /* keeps space for button below */
+  height: 60%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -40,17 +41,18 @@ header {
 
 .speech-bubble {
   position: absolute;
-  bottom: 400px;
   left: 50%;
   transform: translateX(-50%);
+  width: 80%;
+  max-width: 600px;
+  font-size: 14px;
+  bottom: 200px; 
 
-  width: 800px;
   background: white;
   border: 4px solid black;
   border-radius: 15px;
   padding: 20px;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 18px;
   box-shadow: 4px 4px 0px #333;
 }
 .button-container {
@@ -74,7 +76,7 @@ button:hover {
 
 .no-button {
   background-color: #888;
-  cursor: not-allowed;  /* shows the “🚫” cursor on hover */
+  cursor: not-allowed;  
 }
 
 .no-button:hover {
