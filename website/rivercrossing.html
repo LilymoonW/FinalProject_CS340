@@ -18,15 +18,9 @@
 
 <main>
   <div class="story-container">
-    <p id="storyText">
-      <!-- The personalized message will go here -->
-    </p>
+    <p id="storyText"> </p>
   </div>
   
-  
-    
-
-
   <div id="riverbanks">
     <!-- Left Bank -->
     <div id="left-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
@@ -43,30 +37,22 @@
         <img src="/static/assets/farmer.png" alt="student">
       </div>
     </div>
-
-    <!-- River and Boat -->
     <div id="river">
       <div id="boat" ondrop="dropIntoBoat(event)" ondragover="allowDrop(event)">
         <img src="/static/assets/boat.png" alt="Boat">
       </div>
     </div>
-
-    <!-- Right Bank -->
     <div id="right-bank" class="bank" ondrop="dropOntoBank(event)" ondragover="allowDrop(event)">
-      <!-- Empty at start -->
     </div>
   </div>
 
   <div class="button-container">
     <button type="button" onclick="moveBoat()">Move Boat!</button>
-    <button type="button" onclick="resetGame()">Reset Stage</button> <!-- NEW RESET BUTTON -->
+    <button type="button" onclick="resetGame()">Reset Stage</button> 
   </div>
-  
-
   <p id="message"></p>
 
 </main>
-
 <script>
   window.onload = function() {
     const name = localStorage.getItem('playerName') || 'mystery student';
@@ -77,7 +63,7 @@
     ‘You made it... good. Here’s what you need to do next.
     <br><br>
     You need to get across the lake with your fox, your emotional support goose, and a very important head of lettuce. 
-    The boat can only carry you and one item at a time. But be careful — if you leave the fox alone with the goose, 
+    The boat can only carry you and one item at a time. But be careful, if you leave the fox alone with the goose, 
     or the goose alone with the lettuce, well… let’s just say things will get messy.
     <br><br>
     I’m counting on you to figure this out. Good luck… and remember, think ahead!’`;
@@ -85,13 +71,10 @@
       document.getElementById('storyText').innerHTML = story;
     };
 
-    // --- Game State ---
   let leftBank = ["student", "fox", "goose", "lettuce"];
   let rightBank = [];
   let boat = [];
-  let boatOnLeft = true; // true = boat on left side
-
-  // --- Dragging Functions ---
+  let boatOnLeft = true; 
   function allowDrop(ev) {
     ev.preventDefault();
   }
@@ -108,8 +91,6 @@
     if (boat.length <= 2) { // Max 2 items in the boat
       document.getElementById("boat").appendChild(item);
       boat.push(data);
-
-      // Remove from banks
       leftBank = leftBank.filter(x => x !== data);
       rightBank = rightBank.filter(x => x !== data);
     }
@@ -121,7 +102,6 @@
     const item = document.getElementById(data);
     
     if (boat.includes(data)) {
-      // Move item from boat to a bank
       if (boatOnLeft) {
         document.getElementById("left-bank").appendChild(item);
         leftBank.push(data);
@@ -143,17 +123,16 @@
       return;
     }
 
-    // Animate boat move
     if (boatOnLeft) {
-      boatDiv.style.left = "80%"; // move to right
+      boatDiv.style.left = "80%"; 
     } else {
-      boatDiv.style.left = "5%"; // move to left
+      boatDiv.style.left = "5%"; 
     }
 
     boatOnLeft = !boatOnLeft;
 
     setTimeout(() => {
-      // Drop all items off boat onto the correct bank
+  
       boat.forEach(itemName => {
         const item = document.getElementById(itemName);
         if (boatOnLeft) {
@@ -165,27 +144,22 @@
         }
       });
     
-      boat = []; // Clear the boat
-      checkRules(); // ✅ Check if someone got eaten or if you won
+      boat = [];
+      checkRules(); 
     }, 500);
     
   }
 
-
-  // --- Reset Game Button ---
   function resetGame() {
     window.location.reload();
   }
 
-  // --- Set up initial Drag and Drop ---
   document.querySelectorAll('.item').forEach(item => {
     item.addEventListener("dragstart", drag);
   });
 
   document.getElementById("boat").addEventListener("dragover", allowDrop);
   document.getElementById("boat").addEventListener("drop", dropIntoBoat);
-
-  // Also allow banks to accept items
   document.getElementById("left-bank").addEventListener("dragover", allowDrop);
   document.getElementById("left-bank").addEventListener("drop", dropOntoBank);
   document.getElementById("right-bank").addEventListener("dragover", allowDrop);
@@ -196,8 +170,6 @@
   function checkRules() {
     const left = new Set(leftBank);
     const right = new Set(rightBank);
-
-    // Check danger on the side WITHOUT the student
     const dangerZone = boatOnLeft ? right : left;
 
     if (dangerZone.has("fox") && dangerZone.has("goose")) {
@@ -209,14 +181,12 @@
       showWarning("Oh no! You left the goose and the lettuce alone. The goose ate the lettuce!");
       return;
     }
-
-    // ✅Check win condition
     if (rightBank.includes("student") &&
         rightBank.includes("fox") &&
         rightBank.includes("goose") &&
         rightBank.includes("lettuce")) {
-      document.getElementById("message").textContent = "🎉 You safely crossed Lake Waban! Alexa is proud of you.";
-      // window.open('/lie-intro', '_blank');
+      document.getElementById("message").textContent = "You safely crossed Lake Waban! Alexa is proud of you.";
+    
       setTimeout(() => {
         window.location.href = '/lie-intro';
       }, 1500);

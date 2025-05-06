@@ -28,7 +28,7 @@ header {
   position: relative;
   width: 100%;
   max-width: 800px;
-  height: 70%; /* keeps space for button below */
+  height: 70%; 
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -74,7 +74,7 @@ button:hover {
 
 .no-button {
   background-color: #888;
-  cursor: not-allowed;  /* shows the “🚫” cursor on hover */
+  cursor: not-allowed;  
 }
 
 .no-button:hover {
