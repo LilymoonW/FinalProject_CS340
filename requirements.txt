@@ -1,3 +1,5 @@
 Flask
 z3-solver
 gunicorn
+flask-cors
+flask-socketio
