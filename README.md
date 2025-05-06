@@ -44,10 +44,11 @@ python goals/age.py
 
 To run the river crossing puzzle:
 - Download and open `river.als` in the Alloy Analyzer (requires installation of Alloy).
-
 ---
 
 ### ────୨ৎ──── Running the Interactive Game ────୨ৎ────
+
+Deployed using render: https://finalproject-cs340.onrender.com
 
 To play our interactive logic-based game built in **Flask**:
 
