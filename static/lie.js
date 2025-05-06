@@ -110,9 +110,6 @@ function submitChoices() {
 function makeGuess(guesses) {
     const resultElement = document.getElementById('result');
 
-    // console.log('assignments', assignments)
-    // console.log('guesses', guesses)
-
     let correct = true;
     for (const k in assignments) {
         if (assignments[k] == 'Both') {
@@ -133,13 +130,7 @@ function makeGuess(guesses) {
         document.getElementById("successBox").style.display = "block";
 
         const main = document.querySelector('main');
-        main.style.display = 'none';
-
-        // setTimeout(() => {
-        //     changeToAge(); // goes to age puzzle
-        // }, 2000);
-
-        
+        main.style.display = 'none';        
     } else {
         resultElement.textContent = "Incorrect. Try again!";
         resultElement.style.color = "red";
@@ -151,8 +142,7 @@ function makeGuess(guesses) {
         main.style.display = 'none';
 
         setTimeout(() => {
-            window.location.href = '/';
-            // window.open('/', '_blank'); //goes to back to the start page. 
+            window.location.href = '/'; // goes back to start page
         }, 2000);
     }
 }
@@ -162,13 +152,8 @@ function changeToAge() {
         .then(() => window.location.href = '/age');
 }
 
-function goToStart() {
-    fetch('/next_from_lie', { method: 'POST' })
-        .then(() => window.location.href = '/age');
-}
-
 function playGifAndRedirect() {
-    // Hide everything else
+    // Hide everything
     document.querySelector('main').style.display = 'none';
     document.getElementById('successBox').style.display = 'none';
 
@@ -176,29 +161,9 @@ function playGifAndRedirect() {
     const bg = document.querySelector('.background-div-lie');
     bg.classList.add('transition-gif');
 
-    // After ~3 seconds (or however long your gif lasts), redirect
     setTimeout(() => {
-        window.location.href = '/age';
-    }, 1500); // adjust this to match the length of your gif in ms
-}
-
-// no need
-function seeSolution() {
-    // const assignmentsDiv = document.getElementById('assignments');
-
-    console.log(Object.entries(assignments)
-        .map(([person, value]) => `<li>${person}: ${value}</li>`)
-        .join(''))
-    // assignmentsDiv.innerHTML = '<h2>Assignments:</h2><ul>' +
-    // Object.entries(assignments)
-    //     .map(([person, value]) => `<li>${person}: ${value}</li>`)
-    //     .join('') +
-    // '</ul>';
-}
-
-function hideSolution() {
-    document.getElementById('assignments').innerHTML = '';
-    document.getElementById('result').innerHTML = '';
+        window.location.href = '/age'; // redirect to age puzzle
+    }, 1500);
 }
 
 fetchPuzzle();
