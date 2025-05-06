@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Waban Crossing: Mission Start</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -14,16 +13,16 @@
   </header>
 
   <main>
+    <div class="speech-bubble">
+      <p id="speechText"></p>
+    </div>
+
     <div class="scene">
-      <div class="speech-bubble">
-        <p id="speechText">
-        </p>
-      </div>
       <img src="/static/assets/alexa.png" alt="Alexa" class="character">
     </div>
 
     <div class="button-container">
-      <button type="button" onclick="  window.open('/river', '_self')">Yes</button>
+      <button type="button" onclick="window.open('/river', '_self')">Yes</button>
       <button type="button" class="no-button">No</button>
     </div>
   </main>
