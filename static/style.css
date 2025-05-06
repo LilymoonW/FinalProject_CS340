@@ -2,6 +2,7 @@ body {
   font-family: 'Press Start 2P', cursive;
   text-align: center;
   margin: 0;
+  width: 50%;
   padding: 0;
   background-image: url('assets/science-center.png');
   background-size: cover;
