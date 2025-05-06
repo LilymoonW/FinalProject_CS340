@@ -11,10 +11,11 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;  /* <-- change this line */
   align-items: center;
   padding-top: 80px;
 }
+
 
 header {
   background-color: rgba(0, 121, 107, 0.7);
