@@ -9,10 +9,6 @@
 
     <div class = "background-div-lie">
 
-        <!-- <header>
-            <h1>Clams and Scallops</h1>
-        </header> -->
-
         <main>
             <p>Below are multiple shellfish. Each is either a Clam (Truth-teller) or a Scallop (Liar).  
             Use their statements to guess whether each shellfish is a Clam or a Scallop!</p>
@@ -20,11 +16,11 @@
             <div class="help-images">
                 <div class = "help-item">
                     <img src="/static/clam-blue.png" alt="clam">
-                    <div class = "label">This is a Clam</div>
+                    <div class = "label">This is a Clam (Truth)</div>
                 </div>
                 <div class = "help-item">
                     <img src="/static/scallop-blue.png" alt="clam">
-                    <div class = "label">This is a Scallop</div>
+                    <div class = "label">This is a Scallop (Lie)</div>
                 </div>
             </div>
 
@@ -40,16 +36,6 @@
                 <button type="button" onclick = "submitChoices()">Submit</button>
             </div>
 
-            <!-- <div class = "button-container"> 
-                <button type="button" onclick = "fetchPuzzle()">New Puzzle</button>
-            </div> -->
-
-            <!-- put this in the console, die if lose. -->
-            <!-- <div class = "button-container"> 
-                <button type="button" onclick = "seeSolution()">See Solution</button>
-                <button type="button" onclick = "hideSolution()">Hide Solution</button>
-            </div> -->
-
             <div id="assignments"></div>
 
         </main>
@@ -64,7 +50,6 @@
 
         <div class="clam-dive" id="successBox" style="display: none; text-align: center; margin-top: 2rem;">
             <img src="/static/clam-dive.gif" width="300">
-            <!-- <button onclick="changeToAge()">Continue</button> -->
         </div>
 
     </div>

@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Magic Square</title>
+  <link rel="stylesheet" href="/static/magic_square.css">
+</head>
+<body>
+  <h1>4x4 Magic Square</h1>
+  <p>The sum of all the rows, columns, and diagonals all add up to 34.</p>
+  <p>All values are distinct, and each must be between 1 and 16, </p>
+
+  <div id="magic-square"></div>
+    <button onclick="load_magic_square()">Load New Puzzle</button>
+    <button onclick="check_answer()">Check Answer</button>
+  <p id="result"></p>
+
+  <script src="/static/magic_square.js"></script>
+</body>
+</html>

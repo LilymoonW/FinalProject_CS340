@@ -9,13 +9,13 @@
 </head>
 
 <body class="background-div-intro scene0">
-    <!-- Whirlpool textbox overlay -->
+    <!-- Whirlpool transition -->
     <div id="whirlpoolOverlay">
         <p style="font-size: 1.5rem; font-weight: bold;">A mysterious whirlpool suddenly appears...</p>
         <button onclick="startWhirlpoolTransition()">Enter the Whirlpool</button>
     </div>
 
-    <!-- Animated gif layer (hidden initially) -->
+    <!-- Whirlpool gif transition -->
     <div id="whirlpoolGif"></div>
 
     <main style="display: none;">
@@ -64,7 +64,6 @@
             document.getElementById('whirlpoolGif').style.display = 'block';
 
             setTimeout(() => {
-                // Hide gif, show main content
                 document.getElementById('whirlpoolGif').style.display = 'none';
                 document.querySelector('main').style.display = 'block';
 
