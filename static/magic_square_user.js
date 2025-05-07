@@ -68,7 +68,7 @@ async function check_valid_puzzle() {
         result.style.color = 'orange';
     } else if (data.valid) {
         result.textContent = 'That is a valid magic square!';
-        result.style.color = 'green';
+        result.style.color = 'white';
 
         window.magicModel = data.model
         document.getElementById("solution-area").style.display = "block"

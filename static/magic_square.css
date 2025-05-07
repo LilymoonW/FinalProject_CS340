@@ -6,10 +6,12 @@ body {
   align-items: center;
   justify-content: flex-start;
   padding: 30px;
+  background-image: url("/static/magic-square-bkgd.jpg"); /* 👈 Add this line */
+  color: white;
 }
 
 h1 {
-  color: #333;
+  color: #ffffff;
 }
 
 #magic-square {
@@ -31,7 +33,7 @@ h1 {
   align-items: center;
   border: 2px solid #ccc;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #569485;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
 }
@@ -53,12 +55,13 @@ h1 {
   text-align: center;
   border: 2px solid #ccc;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #569485;
   transition: border-color 0.3s ease;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  color: white;
 }
 
 input.input-cell {
@@ -79,7 +82,7 @@ input.input-cell {
   text-align: center;
   border: 2px solid #ccc;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: #569485;
   transition: border-color 0.3s ease;
 }
 
@@ -91,7 +94,7 @@ input.input-cell {
 button {
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #37516d;
   color: white;
   border: none;
   border-radius: 6px;
@@ -100,7 +103,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #4d657f;
 }
 
 #spinner {

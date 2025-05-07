@@ -40,8 +40,6 @@ function load_magic_square() {
                 input.className = 'input-cell';
                 container.appendChild(input);
             }
-            
-            
         }
       });
 }
@@ -51,10 +49,9 @@ window.onload = load_magic_square;
 function check_answer() {
     const values = {};
 
-    document.querySelectorAll('#magic-square > div').forEach((div, index) => {
+    document.querySelectorAll('#magic-square > *').forEach((t, index) => {
         const key = 's' + index;
-        const input = div.querySelector('input');
-        values[key] = input ? input.value : div.textContent.trim();
+        values[key] = t.tagName === 'INPUT' ? t.value : t.textContent.trim();
     });
 
     fetch('/check_magic_square', {
@@ -72,7 +69,7 @@ function check_answer() {
             result.style.color = 'orange';
         } else if (data.valid) {
             result.textContent = 'You got it!';
-            result.style.color = 'green';
+            result.style.color = 'white';
         } else {
             result.textContent = 'Incorrect.';
             result.textContent += data.message
