@@ -131,3 +131,18 @@ button:hover {
   justify-content: center;
   align-items: center;
 }
+
+#solution-output {
+  font-family: monospace;
+  white-space: pre-wrap;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1.2rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fefefe;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}

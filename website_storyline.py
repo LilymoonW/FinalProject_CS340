@@ -213,8 +213,6 @@ def check_magic_square():
                 return jsonify({"success": True, "valid": False, "message": " Some Value not between 1 and 16"})
             
         box.append(row)
-    
-    print(box)
 
     # row
     for i in range(4):
@@ -243,7 +241,8 @@ def check_magic_square():
     return jsonify({"success": True, "valid": True})
 
 # === Route 7: Check User generated magic square puzzle ===
-# not working rn
+# Checks whether user's inputs could be made into a valid
+# magic square
 @app.route('/check_gen_ms', methods=['POST'])
 def check_valid_square():
 
@@ -252,26 +251,21 @@ def check_valid_square():
     if not data:
         return jsonify({"success": False, "message": "No data received."})
     
-    v = list(data.values())
-    sqr_ints = list(data)
+    v = list(data.values()) # values
+    sqr_ints = list(data) # names
 
     n = int(math.sqrt(len(v)))
 
-    # print(v)
-    # print(sqr_ints)
-
     squares = []
     for i in range((n * n)):
-        name = "s" + str(i)
+        name = sqr_ints[i]
         squares.append(Int(str(name)))
 
     s = Solver()
 
     for i in range(len(v)):
-        # print("i", i)
         if v[i] is not None:
-            # print("in")
-            s.add(squares[i] == int(v[i])) # Here?
+            s.add(squares[i] == int(v[i]))
 
     magic_sum = (n * (n * n + 1)) // 2
 
@@ -309,11 +303,8 @@ def check_valid_square():
 
     if res == sat:
         mod = s.model()
-        print(mod)
         return jsonify({"success": True, "valid": True, "model": str(mod)})
-
     else:
-        print(res)
         return jsonify({"success": True, "valid": False})
 
 # === Flow: Home (start game) ===

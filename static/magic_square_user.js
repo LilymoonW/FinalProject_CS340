@@ -8,6 +8,9 @@ function setup_magic_square() {
             return;
         }
 
+        document.getElementById("solution-area").style.display = "none" //close solution
+        document.getElementById("result").style.display = "none"
+        document.getElementById("solution-output").style.display = "none"
         const container = document.getElementById("magic-square-user");
         container.innerHTML = '';
 
@@ -37,6 +40,9 @@ async function check_valid_puzzle() {
 
     const spinner = document.getElementById("spinner");
     const result = document.getElementById("result");
+    result.style.display = "block"
+    document.getElementById("solution-area").style.display = "none"
+    document.getElementById("solution-output").style.display = "none"
     spinner.style.display = "block";
     result.innerText = "";
 
@@ -62,11 +68,46 @@ async function check_valid_puzzle() {
         result.style.color = 'orange';
     } else if (data.valid) {
         result.textContent = 'That is a valid magic square!';
-        result.textContent += data.model
         result.style.color = 'green';
+
+        window.magicModel = data.model
+        document.getElementById("solution-area").style.display = "block"
     } else {
         result.textContent = 'That\'s not a valid magic square.';
         result.style.color = 'red';
+    }
+}
+
+function show_solution() {
+    const output = document.getElementById("solution-output")
+    output.style.display = "block"
+    if (window.magicModel) {
+        let text = JSON.stringify(window.magicModel);
+        text = text.replace(/\\n/g, ' ');
+        text = text.replace(/[\[\]"]/g, '') 
+
+        // to sort by index
+        let pairs = text.split(',').map(p => p.trim()).filter(p => p);
+
+        // Sort by numeric index in sX
+        pairs.sort((a, b) => {
+            const aIndex = parseInt(a.match(/s(\d+)/)[1]);
+            const bIndex = parseInt(b.match(/s(\d+)/)[1]);
+            return aIndex - bIndex;
+        });
+
+        const values = pairs.map(p => p.split('=')[1].trim());
+        const n = Math.sqrt(values.length);
+
+        // Build a grid string
+        let gridText = '';
+        for (let i = 0; i < n; i++) {
+            gridText += values.slice(i * n, (i + 1) * n).join('\t') + '\n';
+        }
+        output.innerText = gridText.trim();
+
+    } else {
+        output.innerText = "⚠️ No solution available.";
     }
 }
 
