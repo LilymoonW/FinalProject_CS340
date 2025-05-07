@@ -1,7 +1,7 @@
 from z3 import *
 import random
 
-def combine_implications(statements):
+def make_implications(statements):
 
     if not statements:
         return BoolVal(True)
@@ -11,11 +11,7 @@ def combine_implications(statements):
     for s in statements:
         implications.append(Implies(s[0], s[1]))
 
-    final = implications[0]
-    for i in range(1, len(implications)):
-        final = And(final, implications[i])
-    
-    return final
+    return implications
 
 
 # A very special island is inhabited only by knights and knaves. 
@@ -33,23 +29,16 @@ def knight_knave1():
 
     s = Solver()
 
-    
-    # constraints
-    # s.add(Implies(b, And(Not(b), Not(a))))
-    # s.add(Implies(Not(b), Or(b, a)))
-
     constraints = []
     constraints.append((b, And(Not(b), Not(a))))
     constraints.append((Not(b), Or(b, a)))
-    s.add(combine_implications(constraints))
+    s.add(And(make_implications(constraints)))
     
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(a))
-        print(mod.evaluate(b))
     else:
         print(res)
 
@@ -71,24 +60,18 @@ def knight_knave2():
     # zoey's statement
     c.append((z, Not(m)))
     c.append((Not(z), m))
-    # s.add(Implies(z, Not(m))) #tell truth
-    # s.add(Implies(Not(z), m)) #lying
 
     # mel's statement
     c.append((m, And(z, m)))
     c.append((Not(m), Or(Not(z), Not(m))))
-    # s.add(Implies(m, And(z, m)))
-    # s.add(Implies(Not(m), Or(Not(z), Not(m))))
 
-    s.add(combine_implications(c))
+    s.add(And(make_implications(c)))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(m))
-        print(mod.evaluate(z))
     else:
         print(res)
 
@@ -114,47 +97,36 @@ def knight_knave3():
     # Hugo's statement
     # true = i am knight, false = i am knave
     h_statement = Bool("h_statement") 
-    # s.add(Or(h_statement, Not(h_statement))) # don't really need but
     
+    # 1
     c.append((h, Implies(h_statement, h)))
     c.append((h, Implies(Not(h_statement), Not(h))))
-    # s.add(Implies(h, Implies(h_statement, h)))
-    # s.add(Implies(h, Implies(Not(h_statement), Not(h))))
-
     c.append((Not(h), Implies(h_statement, Not(h))))
     c.append((Not(h), Implies(Not(h_statement), h)))
-    # s.add(Implies(Not(h), Implies(h_statement, Not(h))))
-    # s.add(Implies(Not(h), Implies(Not(h_statement), h)))
 
+    # 2
     c.append((i, Not(h_statement)))
     c.append((Not(i), h_statement))
-    # s.add(Implies(i, Not(h_statement))) # 2
-    # s.add(Implies(Not(i), h_statement)) # 2
 
+    # 3
     c.append((i, Not(j)))
     c.append((Not(i), j))
-    # s.add(Implies(i, Not(j))) # 3
-    # s.add(Implies(Not(i), j)) # 3
 
+    # 4
     c.append((j, h))
     c.append((Not(j), Not(h)))
-    # s.add(Implies(j, h)) # 4
-    # s.add(Implies(Not(j), Not(h))) # 4
 
-    s.add(combine_implications(c))
+    s.add(And(make_implications(c)))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(h))
-        print(mod.evaluate(i))
-        print(mod.evaluate(j))
     else:
         print(res)
 
-knight_knave3()
+# knight_knave3()
 
 # knight, a knave, or normals (normals can tell lies or truths)
 
@@ -163,7 +135,7 @@ knight_knave3()
 # 2) Lily says “I am the knave,”
 # 3) Max says “Lily is the knight.”
 # Who is the knight, the knave, and the normal?
-# 
+# solution: K = 1, L = 0, M = -1
 def knight_knave4():
     k = Int("k")
     l = Int("l")
@@ -174,39 +146,53 @@ def knight_knave4():
     # -1 = knave
     # 0 = normal
     # 1 = knight
-    s.add(Or(k == -1, Or(k == 0, k == 1)))
-    s.add(Or(l == -1, Or(l == 0, l == 1)))
-    s.add(Or(m == -1, Or(m == 0, m == 1)))
+
+    all_c = [] # all constraints
+    all_c.append(And(k >= -1, k <= 1))
+    all_c.append(And(l >= -1, l <= 1))
+    all_c.append(And(m >= -1, m <= 1))
+    # s.add(Or(k == -1, Or(k == 0, k == 1)))
+    # s.add(Or(l == -1, Or(l == 0, l == 1)))
+    # s.add(Or(m == -1, Or(m == 0, m == 1)))
 
     # all different ckasses
-    s.add(Distinct(k,l,m))
+    all_c.append(Distinct(k,l,m))
+    # s.add(Distinct(k,l,m))
 
-    # constraints
-    s.add(Implies(k == 1, k == 1)) # 1
-    s.add(Implies(k == -1, k != 1)) # 1
+    # implications
+    i = []
+    i.append((k == 1, k == 1))
+    i.append((k == -1, k != 1))
 
-    s.add(Implies(l == 1, l == -1))
-    s.add(Implies(l == -1, l != -1))
+    # s.add(Implies(k == 1, k == 1)) # 1
+    # s.add(Implies(k == -1, k != 1)) # 1
 
-    s.add(Implies(m == 1, l == 1))
-    s.add(Implies(m == -1, l != 1))
+    i.append((l == 1, l == -1))
+    i.append((l == -1, l != -1))
+    # s.add(Implies(l == 1, l == -1))
+    # s.add(Implies(l == -1, l != -1))
+
+    i.append((m == 1, l == 1))
+    i.append((m == -1, l != 1))
+    # s.add(Implies(m == 1, l == 1))
+    # s.add(Implies(m == -1, l != 1))
 
     # s.add(Implies(k == 0, Or(k == 1)) # 1
     # s.add(Implies(l == 0, l == -1))
     # s.add(Implies(m == 0, l == 1))
+
+    all_c.extend(make_implications(i))
+    s.add(And(all_c))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(k))
-        print(mod.evaluate(l))
-        print(mod.evaluate(m))
     else:
         print(res)
           
-# knight_knave4()
+knight_knave4()
 
 
 # 5
