@@ -165,4 +165,6 @@ This experience helped us understand the strengths and limitations of different 
 
 ---
 
+We utilized AI to help generate and debug all html and css files.
+
 
