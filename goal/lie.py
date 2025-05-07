@@ -1,12 +1,30 @@
 from z3 import *
 import random
 
-#
+def combine_implications(statements):
+
+    if not statements:
+        return BoolVal(True)
+    
+    implications = []
+
+    for s in statements:
+        implications.append(Implies(s[0], s[1]))
+
+    final = implications[0]
+    for i in range(1, len(implications)):
+        final = And(final, implications[i])
+    
+    return final
+
+
+# A very special island is inhabited only by knights and knaves. 
+# Knights always tell the truth, and knaves always lie.
 
 # Alice and Bob are residents of the island of knaves and knights
 # Bob says: “We are both knaves”
 # Whose the knight and who is a knave?
-
+# solution: Alice = True, Bob = False
 def knight_knave1():
     # true means that they are knights
 
@@ -15,9 +33,16 @@ def knight_knave1():
 
     s = Solver()
 
-    s.add(Implies(b, And(Not(b), Not(a))))
-    s.add(Implies(Not(b), Or(b, a)))
+    
+    # constraints
+    # s.add(Implies(b, And(Not(b), Not(a))))
+    # s.add(Implies(Not(b), Or(b, a)))
 
+    constraints = []
+    constraints.append((b, And(Not(b), Not(a))))
+    constraints.append((Not(b), Or(b, a)))
+    s.add(combine_implications(constraints))
+    
     res = s.check()
 
     if res == sat:
@@ -31,30 +56,31 @@ def knight_knave1():
 # knight_knave1()
 
 
-
-# A very special island is inhabited only by knights and knaves. 
-# Knights always tell the truth, and knaves always lie.
-
-#You meet two inhabitants: Zoey and Mel. 
+# You meet two inhabitants: Zoey and Mel. 
 # Zoey tells you that Mel is a knave. 
 # Mel says, “Neither Zoey nor I are knaves.”
-
-#Can you determine who is a knight and who is a knave?
-
+# solution: Z = True, Mel = False
 def knight_knave2():
-    # true means that they are knights
-
     m = Bool("m") # mel
     z = Bool("z") # zoey
 
     s = Solver()
 
-    s.add(Implies(z, Not(m))) # zoey's statement
-    s.add(Implies(m, And(z, m)))
+    c = [] # constraints
 
-    # what does one telling truth imply about the other
-    s.add(Implies(Not(m), Or(Not(z), Not(m))))
-    s.add(Implies(Not(z), m))
+    # zoey's statement
+    c.append((z, Not(m)))
+    c.append((Not(z), m))
+    # s.add(Implies(z, Not(m))) #tell truth
+    # s.add(Implies(Not(z), m)) #lying
+
+    # mel's statement
+    c.append((m, And(z, m)))
+    c.append((Not(m), Or(Not(z), Not(m))))
+    # s.add(Implies(m, And(z, m)))
+    # s.add(Implies(Not(m), Or(Not(z), Not(m))))
+
+    s.add(combine_implications(c))
 
     res = s.check()
 
@@ -68,16 +94,14 @@ def knight_knave2():
 
 # knight_knave2()
 
-
+# Goodman's Variant
 # Three inhabitants Hugo, Iris, James meet some day
 # 1) Hugo says either “I am a knight” or “I am a knave”, we don't know which 
 # 2) Iris says “Hugo said, ‘I am a knave’”
 # 3) Iris says “James is a knave”
 # 4) James says “Hugo is knight”
 # Who is a knave and who is a knight?
-
-# finish
-
+# Solution: H = True, I = False, J = True
 def knight_knave3():
     h = Bool("h")
     i = Bool("i")
@@ -85,18 +109,39 @@ def knight_knave3():
 
     s = Solver()
 
-    # s.add(Or(h, Not(h))) # 1
-    s.add(Implies(i, Implies(h, Not(h)))) # 2
-    s.add(Implies(i, Implies(Not(h), h)))
-    s.add(Implies(i, Not(j))) # 3
-    s.add(Implies(j, h)) # 4
+    c = [] # constraints
 
-    # s.add(Implies(Not(h), Not(Or(h, Not(h))))) # useless
-    s.add(Implies(Not(i), Implies(h, h))) # 2
-    s.add(Implies(Not(i), Implies(Not(h), Not(h)))) # 2
-    s.add(Implies(Not(i), j)) # 3
-    s.add(Implies(Not(j), Not(h))) # 4
+    # Hugo's statement
+    # true = i am knight, false = i am knave
+    h_statement = Bool("h_statement") 
+    # s.add(Or(h_statement, Not(h_statement))) # don't really need but
+    
+    c.append((h, Implies(h_statement, h)))
+    c.append((h, Implies(Not(h_statement), Not(h))))
+    # s.add(Implies(h, Implies(h_statement, h)))
+    # s.add(Implies(h, Implies(Not(h_statement), Not(h))))
 
+    c.append((Not(h), Implies(h_statement, Not(h))))
+    c.append((Not(h), Implies(Not(h_statement), h)))
+    # s.add(Implies(Not(h), Implies(h_statement, Not(h))))
+    # s.add(Implies(Not(h), Implies(Not(h_statement), h)))
+
+    c.append((i, Not(h_statement)))
+    c.append((Not(i), h_statement))
+    # s.add(Implies(i, Not(h_statement))) # 2
+    # s.add(Implies(Not(i), h_statement)) # 2
+
+    c.append((i, Not(j)))
+    c.append((Not(i), j))
+    # s.add(Implies(i, Not(j))) # 3
+    # s.add(Implies(Not(i), j)) # 3
+
+    c.append((j, h))
+    c.append((Not(j), Not(h)))
+    # s.add(Implies(j, h)) # 4
+    # s.add(Implies(Not(j), Not(h))) # 4
+
+    s.add(combine_implications(c))
 
     res = s.check()
 
@@ -109,7 +154,7 @@ def knight_knave3():
     else:
         print(res)
 
-# knight_knave3()
+knight_knave3()
 
 # knight, a knave, or normals (normals can tell lies or truths)
 
@@ -118,7 +163,7 @@ def knight_knave3():
 # 2) Lily says “I am the knave,”
 # 3) Max says “Lily is the knight.”
 # Who is the knight, the knave, and the normal?
-
+# 
 def knight_knave4():
     k = Int("k")
     l = Int("l")
@@ -133,26 +178,17 @@ def knight_knave4():
     s.add(Or(l == -1, Or(l == 0, l == 1)))
     s.add(Or(m == -1, Or(m == 0, m == 1)))
 
-    # all dufferebt ckasses
-    s.add(Implies(k == -1, And(l != -1, m != -1)))
-    s.add(Implies(k == 0, And(l != 0, m != 0)))
-    s.add(Implies(k == 1, And(l != 1, m != 1)))
-
-    s.add(Implies(l == -1, And(k != -1, m != -1)))
-    s.add(Implies(l == 0, And(k != 0, m != 0)))
-    s.add(Implies(l == 1, And(k != 1, m != 1)))
-
-    s.add(Implies(m == -1, And(l != -1, k != -1)))
-    s.add(Implies(m == 0, And(l != 0, k != 0)))
-    s.add(Implies(m == 1, And(l != 1, k != 1)))
+    # all different ckasses
+    s.add(Distinct(k,l,m))
 
     # constraints
     s.add(Implies(k == 1, k == 1)) # 1
-    s.add(Implies(l == 1, l == -1))
-    s.add(Implies(m == 1, l == 1))
-
     s.add(Implies(k == -1, k != 1)) # 1
+
+    s.add(Implies(l == 1, l == -1))
     s.add(Implies(l == -1, l != -1))
+
+    s.add(Implies(m == 1, l == 1))
     s.add(Implies(m == -1, l != 1))
 
     # s.add(Implies(k == 0, Or(k == 1)) # 1
@@ -173,14 +209,12 @@ def knight_knave4():
 # knight_knave4()
 
 
-
-# FIX THIS
 # 5
 # 1) Kenny says “I am the knight,”
 # 2) Lily says “Kenny is telling the truth,”
 # 3) Max says “I am the normal”
-# Who is the knight, the knave, and the normal
-
+# Who is the knight, the knave, and the normal?
+# solution: k = 1, l = 0, m = -1
 def knight_knave5():
     k = Int("k")
     l = Int("l")
@@ -195,7 +229,7 @@ def knight_knave5():
     s.add(Or(l == -1, Or(l == 0, l == 1)))
     s.add(Or(m == -1, Or(m == 0, m == 1)))
 
-    # all dufferebt ckasses
+    # all different classes
     s.add(Implies(k == -1, And(l != -1, m != -1)))
     s.add(Implies(k == 0, And(l != 0, m != 0)))
     s.add(Implies(k == 1, And(l != 1, m != 1)))
@@ -209,13 +243,17 @@ def knight_knave5():
     s.add(Implies(m == 1, And(l != 1, k != 1)))
 
     # constraints 
-    s.add(Implies(k == 1, k == 1)) # 1
-    s.add(Implies(l == 1, k == 1))
-    s.add(Implies(m == 1, Or(m == 1, m == -1)))
+    #1
+    s.add(Implies(k == 1, k == 1))
+    s.add(Implies(k == -1, Not(k == 1)))
 
-    s.add(Implies(k == -1, k != 1)) # 1
-    s.add(Implies(l == -1, k != 1))
-    s.add(Implies(m == -1, Not(Or(m == 1, m == -1))))
+    #2 
+    s.add(Implies(l == 1, k == 1))
+    s.add(Implies(l == -1, Not(k == 1)))
+
+    #3
+    s.add(Implies(m == 1, m == 0))
+    s.add(Implies(m == -1, Not(m == 0)))
 
     res = s.check()
 
@@ -228,13 +266,14 @@ def knight_knave5():
     else:
         print(res)
           
-# knight_knave5() # fix this
+# knight_knave5()
 
 
 # 6
 # Kenny says “I am not the normal,”
 # Lily says “I am not the normal,”
 # Max says “I am not the normal”
+# solution: no solutions
 def knight_knave6():
     k = Int("k")
     l = Int("l")
@@ -249,7 +288,7 @@ def knight_knave6():
     s.add(Or(l == -1, Or(l == 0, l == 1)))
     s.add(Or(m == -1, Or(m == 0, m == 1)))
 
-    # all dufferebt ckasses
+    # all dufferent ckasses
     s.add(Implies(k == -1, And(l != -1, m != -1)))
     s.add(Implies(k == 0, And(l != 0, m != 0)))
     s.add(Implies(k == 1, And(l != 1, m != 1)))
@@ -282,10 +321,12 @@ def knight_knave6():
     else:
         print(res)
 
-# knight_knave6()
+# knight_knave6() 
 
 
 # n = number of people
+# Generates a random knights and knaves puzzle with 
+# n number of people. 
 def generate_instances(n):
     s = Solver()
 
@@ -321,4 +362,4 @@ def generate_instances(n):
     else:
         generate_instances(n)
 
-generate_instances(random.randint(3,5))
+# generate_instances(random.randint(3,5))
