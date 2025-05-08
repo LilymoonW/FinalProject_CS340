@@ -25,8 +25,8 @@ def make_implications(statements):
 def knight_knave1():
     # true means that they are knights
 
-    b = Bool("b") # mel
-    a = Bool("a") # zoey
+    a = Bool("a") # alice
+    b = Bool("b") # bob
 
     s = Solver()
 
