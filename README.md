@@ -72,7 +72,7 @@ You’ll be able to interact with a story-driven puzzle experience combining log
 ## ⋆.˚ ☼⋆𓇼｡𖦹˙༄.° Project Goals ⋆.˚ ☼⋆𓇼｡𖦹˙༄.°
 
 
-We focus on three categories:
+We focus on four categories:
 
 ### 1. ﹏𓊝﹏☼⋆.˚ River Crossing Puzzles ﹏𓊝﹏☼⋆.˚
 
@@ -103,7 +103,11 @@ Puzzle involves logical constraints, each box is assigned a label which does not
 🔧 Solved using **Z3**  
 🔗 [ Mislabeled Boxes - Mind Your Decisions](https://mindyourdecisions.com/blog/2025/02/16/apple-interview-question-mislabeled-boxes/).
 
----
+### 5. Magic Squares
+Squares with the sum of the rows, columns, and the main diagonals all equating the same number. You can fill in the blanks in a semi-revealed square, or try making your own and verifying it. 
+🔧 Solved using **Z3** 
+Magic square
+https://en.wikipedia.org/wiki/Magic_square
 
 ## Tradeoffs in Representation
 
@@ -138,6 +142,8 @@ This puzzle is purely logical, with constraints like "the label is always wrong"
 - Why Z3? It allows for clean, propositional logic modeling. We could express conditions like "label ≠ content" and apply constraints systematically.
 - Why not Alloy? While Alloy can handle logic well, Z3’s first-order logic and solver feedback make it easier to express and verify small-scale logical deduction puzzles.
 
+### 5. Magic Squares
+We used Z3 for this model as it involves arithmetic operations on integers, whereas integer operations are rather limited in Alloy. 
 
 ---
 
@@ -149,6 +155,8 @@ We selected 100 arbitrarily to ensure that Alloy’s bounded analysis wouldn’t
 For the **Lying puzzle**, we limited the scope to only generate puzzles with the number of people between and including 3 and 5. Additionally, for each random variation of the puzzle generated with n people, we only generated n statements. These both limit the number of puzzles we are able to generate.
 
 For the **Age puzzle**, we assumed that the product is between 1 to 100 and the sum of ages to be between 2 and 50. This limits the scope of the number of random problems our model can find. Additionally, when generating random variations, I limited the steps to 100—Z3* must find a solvable sum and product within this limit, or it will return undefined.
+
+For the **Magic Squares** puzzle, we limited the size of a magic square a user can generate to 5, as having more rows and columns would take a while to generate.
 
 ---
 
