@@ -1,12 +1,27 @@
 from z3 import *
 import random
 
-#
+
+def make_implications(statements):
+
+    if not statements:
+        return BoolVal(True)
+    
+    implications = []
+
+    for s in statements:
+        implications.append(Implies(s[0], s[1]))
+
+    return implications
+
+
+# A very special island is inhabited only by knights and knaves. 
+# Knights always tell the truth, and knaves always lie.
 
 # Alice and Bob are residents of the island of knaves and knights
 # Bob says: “We are both knaves”
 # Whose the knight and who is a knave?
-
+# solution: Alice = True, Bob = False
 def knight_knave1():
     # true means that they are knights
 
@@ -15,69 +30,62 @@ def knight_knave1():
 
     s = Solver()
 
-    s.add(Implies(b, And(Not(b), Not(a))))
-    s.add(Implies(Not(b), Or(b, a)))
-
+    constraints = []
+    constraints.append((b, And(Not(b), Not(a))))
+    constraints.append((Not(b), Or(b, a)))
+    s.add(And(make_implications(constraints)))
+    
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(a))
-        print(mod.evaluate(b))
     else:
         print(res)
 
 # knight_knave1()
 
 
-
-# A very special island is inhabited only by knights and knaves. 
-# Knights always tell the truth, and knaves always lie.
-
-#You meet two inhabitants: Zoey and Mel. 
+# You meet two inhabitants: Zoey and Mel. 
 # Zoey tells you that Mel is a knave. 
 # Mel says, “Neither Zoey nor I are knaves.”
-
-#Can you determine who is a knight and who is a knave?
-
+# solution: Z = True, Mel = False
 def knight_knave2():
-    # true means that they are knights
-
     m = Bool("m") # mel
     z = Bool("z") # zoey
 
     s = Solver()
 
-    s.add(Implies(z, Not(m))) # zoey's statement
-    s.add(Implies(m, And(z, m)))
+    c = [] # constraints
 
-    # what does one telling truth imply about the other
-    s.add(Implies(Not(m), Or(Not(z), Not(m))))
-    s.add(Implies(Not(z), m))
+    # zoey's statement
+    c.append((z, Not(m)))
+    c.append((Not(z), m))
+
+    # mel's statement
+    c.append((m, And(z, m)))
+    c.append((Not(m), Or(Not(z), Not(m))))
+
+    s.add(And(make_implications(c)))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(m))
-        print(mod.evaluate(z))
     else:
         print(res)
 
 # knight_knave2()
 
-
+# Goodman's Variant
 # Three inhabitants Hugo, Iris, James meet some day
 # 1) Hugo says either “I am a knight” or “I am a knave”, we don't know which 
 # 2) Iris says “Hugo said, ‘I am a knave’”
 # 3) Iris says “James is a knave”
 # 4) James says “Hugo is knight”
 # Who is a knave and who is a knight?
-
-# finish
-
+# Solution: H = True, I = False, J = True
 def knight_knave3():
     h = Bool("h")
     i = Bool("i")
@@ -85,27 +93,37 @@ def knight_knave3():
 
     s = Solver()
 
-    # s.add(Or(h, Not(h))) # 1
-    s.add(Implies(i, Implies(h, Not(h)))) # 2
-    s.add(Implies(i, Implies(Not(h), h)))
-    s.add(Implies(i, Not(j))) # 3
-    s.add(Implies(j, h)) # 4
+    c = [] # constraints
 
-    # s.add(Implies(Not(h), Not(Or(h, Not(h))))) # useless
-    s.add(Implies(Not(i), Implies(h, h))) # 2
-    s.add(Implies(Not(i), Implies(Not(h), Not(h)))) # 2
-    s.add(Implies(Not(i), j)) # 3
-    s.add(Implies(Not(j), Not(h))) # 4
+    # Hugo's statement
+    # true = i am knight, false = i am knave
+    h_statement = Bool("h_statement") 
+    
+    # 1
+    c.append((h, Implies(h_statement, h)))
+    c.append((h, Implies(Not(h_statement), Not(h))))
+    c.append((Not(h), Implies(h_statement, Not(h))))
+    c.append((Not(h), Implies(Not(h_statement), h)))
 
+    # 2
+    c.append((i, Not(h_statement)))
+    c.append((Not(i), h_statement))
+
+    # 3
+    c.append((i, Not(j)))
+    c.append((Not(i), j))
+
+    # 4
+    c.append((j, h))
+    c.append((Not(j), Not(h)))
+
+    s.add(And(make_implications(c)))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(h))
-        print(mod.evaluate(i))
-        print(mod.evaluate(j))
     else:
         print(res)
 
@@ -118,7 +136,7 @@ def knight_knave3():
 # 2) Lily says “I am the knave,”
 # 3) Max says “Lily is the knight.”
 # Who is the knight, the knave, and the normal?
-
+# solution: K = 1, L = 0, M = -1
 def knight_knave4():
     k = Int("k")
     l = Int("l")
@@ -126,61 +144,49 @@ def knight_knave4():
 
     s = Solver()
 
-    # -1 = knave
-    # 0 = normal
-    # 1 = knight
-    s.add(Or(k == -1, Or(k == 0, k == 1)))
-    s.add(Or(l == -1, Or(l == 0, l == 1)))
-    s.add(Or(m == -1, Or(m == 0, m == 1)))
+    # -1 = knave, 0 = normal, 1 = knight
+    all_c = [] # all constraints
 
-    # all dufferebt ckasses
-    s.add(Implies(k == -1, And(l != -1, m != -1)))
-    s.add(Implies(k == 0, And(l != 0, m != 0)))
-    s.add(Implies(k == 1, And(l != 1, m != 1)))
+    # have 
+    all_c.append(And(k >= -1, k <= 1))
+    all_c.append(And(l >= -1, l <= 1))
+    all_c.append(And(m >= -1, m <= 1))
 
-    s.add(Implies(l == -1, And(k != -1, m != -1)))
-    s.add(Implies(l == 0, And(k != 0, m != 0)))
-    s.add(Implies(l == 1, And(k != 1, m != 1)))
+    # all different classes
+    all_c.append(Distinct(k,l,m))
 
-    s.add(Implies(m == -1, And(l != -1, k != -1)))
-    s.add(Implies(m == 0, And(l != 0, k != 0)))
-    s.add(Implies(m == 1, And(l != 1, k != 1)))
+    # implications
+    i = []
 
-    # constraints
-    s.add(Implies(k == 1, k == 1)) # 1
-    s.add(Implies(l == 1, l == -1))
-    s.add(Implies(m == 1, l == 1))
+    i.append((k == 1, k == 1))
+    i.append((k == -1, k != 1))
 
-    s.add(Implies(k == -1, k != 1)) # 1
-    s.add(Implies(l == -1, l != -1))
-    s.add(Implies(m == -1, l != 1))
+    i.append((l == 1, l == -1))
+    i.append((l == -1, l != -1))
 
-    # s.add(Implies(k == 0, Or(k == 1)) # 1
-    # s.add(Implies(l == 0, l == -1))
-    # s.add(Implies(m == 0, l == 1))
+    i.append((m == 1, l == 1))
+    i.append((m == -1, l != 1))
+
+    all_c.extend(make_implications(i))
+    s.add(And(all_c))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(k))
-        print(mod.evaluate(l))
-        print(mod.evaluate(m))
     else:
         print(res)
           
 # knight_knave4()
 
 
-
-# FIX THIS
 # 5
 # 1) Kenny says “I am the knight,”
 # 2) Lily says “Kenny is telling the truth,”
 # 3) Max says “I am the normal”
-# Who is the knight, the knave, and the normal
-
+# Who is the knight, the knave, and the normal?
+# solution: k = 1, l = 0, m = -1
 def knight_knave5():
     k = Int("k")
     l = Int("l")
@@ -188,53 +194,57 @@ def knight_knave5():
 
     s = Solver()
 
-    # -1 = knave
-    # 0 = normal
-    # 1 = knight
-    s.add(Or(k == -1, Or(k == 0, k == 1)))
-    s.add(Or(l == -1, Or(l == 0, l == 1)))
-    s.add(Or(m == -1, Or(m == 0, m == 1)))
+    # -1 = knave, 0 = normal, 1 = knight
 
-    # all dufferebt ckasses
-    s.add(Implies(k == -1, And(l != -1, m != -1)))
-    s.add(Implies(k == 0, And(l != 0, m != 0)))
-    s.add(Implies(k == 1, And(l != 1, m != 1)))
+    all_c = [] # all constraints
 
-    s.add(Implies(l == -1, And(k != -1, m != -1)))
-    s.add(Implies(l == 0, And(k != 0, m != 0)))
-    s.add(Implies(l == 1, And(k != 1, m != 1)))
+    # have 
+    all_c.append(And(k >= -1, k <= 1))
+    all_c.append(And(l >= -1, l <= 1))
+    all_c.append(And(m >= -1, m <= 1))
 
-    s.add(Implies(m == -1, And(l != -1, k != -1)))
-    s.add(Implies(m == 0, And(l != 0, k != 0)))
-    s.add(Implies(m == 1, And(l != 1, k != 1)))
+    # all different classes
+    all_c.append(Distinct(k,l,m))
 
-    # constraints 
-    s.add(Implies(k == 1, k == 1)) # 1
-    s.add(Implies(l == 1, k == 1))
-    s.add(Implies(m == 1, Or(m == 1, m == -1)))
+    # implications 
+    i = []
 
-    s.add(Implies(k == -1, k != 1)) # 1
-    s.add(Implies(l == -1, k != 1))
-    s.add(Implies(m == -1, Not(Or(m == 1, m == -1))))
+    # true = kenny tells truth, false = kenny lies
+    k_statement = Bool("k_statement") 
+    i.append((k_statement, k == 1))
+    i.append((Not(k_statement), k != 1))
+
+    #1
+    i.append((k == 1, k == 1))
+    i.append((k == -1, Not(k == 1)))
+
+    #2 
+    i.append((l == 1, k_statement))
+    i.append((l == -1, Not(k_statement)))
+
+    #3
+    i.append((m == 1, m == 0))
+    i.append((m == -1, Not(m == 0)))
+
+    all_c.extend(make_implications(i))
+    s.add(And(all_c))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(k))
-        print(mod.evaluate(l))
-        print(mod.evaluate(m))
     else:
         print(res)
           
-# knight_knave5() # fix this
+# knight_knave5()
 
 
 # 6
 # Kenny says “I am not the normal,”
 # Lily says “I am not the normal,”
 # Max says “I am not the normal”
+# solution: no solutions
 def knight_knave6():
     k = Int("k")
     l = Int("l")
@@ -242,50 +252,46 @@ def knight_knave6():
 
     s = Solver()
 
-    # -1 = knave
-    # 0 = normal
-    # 1 = knight
-    s.add(Or(k == -1, Or(k == 0, k == 1)))
-    s.add(Or(l == -1, Or(l == 0, l == 1)))
-    s.add(Or(m == -1, Or(m == 0, m == 1)))
+    # -1 = knave, 0 = normal, 1 = knight
+    all_c = [] # all constraints
 
-    # all dufferebt ckasses
-    s.add(Implies(k == -1, And(l != -1, m != -1)))
-    s.add(Implies(k == 0, And(l != 0, m != 0)))
-    s.add(Implies(k == 1, And(l != 1, m != 1)))
+    # have 
+    all_c.append(And(k >= -1, k <= 1))
+    all_c.append(And(l >= -1, l <= 1))
+    all_c.append(And(m >= -1, m <= 1))
 
-    s.add(Implies(l == -1, And(k != -1, m != -1)))
-    s.add(Implies(l == 0, And(k != 0, m != 0)))
-    s.add(Implies(l == 1, And(k != 1, m != 1)))
+    # all different classes
+    all_c.append(Distinct(k,l,m))
 
-    s.add(Implies(m == -1, And(l != -1, k != -1)))
-    s.add(Implies(m == 0, And(l != 0, k != 0)))
-    s.add(Implies(m == 1, And(l != 1, k != 1)))
+    # implications
+    i = []
+    i.append((k == 1, k != 0))
+    i.append((k == -1, k == 0))
 
-    # constrants
-    s.add(Implies(k == 1, k != 0))
-    s.add(Implies(l == 1, l != 0))
-    s.add(Implies(m == 1, m != 0))
+    i.append((l == 1, l != 0))
+    i.append((l == -1, l == 0))
 
-    s.add(Implies(k == -1, k == 0))
-    s.add(Implies(l == -1, l == 0))
-    s.add(Implies(m == -1, m == 0))
+    i.append((m == 1, m != 0))
+    i.append((m == -1, m == 0))
+
+    all_c.extend(make_implications(i))
+    s.add(And(all_c))
 
     res = s.check()
 
     if res == sat:
         mod = s.model()
         print(mod)
-        print(mod.evaluate(k))
-        print(mod.evaluate(l))
-        print(mod.evaluate(m))
     else:
         print(res)
 
-# knight_knave6()
+knight_knave6() 
 
 
 # n = number of people
+# Generates a random knights and knaves puzzle with 
+# n number of people, keeps generating until find 
+# an instance of a satisfying puzzle. 
 def generate_instances(n):
     s = Solver()
 
@@ -321,4 +327,4 @@ def generate_instances(n):
     else:
         generate_instances(n)
 
-generate_instances(random.randint(3,5))
+# generate_instances(random.randint(3,5))
