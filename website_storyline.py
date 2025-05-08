@@ -2,6 +2,7 @@
 from flask import Flask, jsonify, render_template, session, request
 from z3 import *
 import random
+import math
 
 app = Flask(__name__, template_folder='website')
 app.secret_key = 'super-secret-key'  # Required for session storage
@@ -94,12 +95,20 @@ def submit_guess():
     return jsonify({"result": "submitted", "correct": correct})
 
 
+
 # === Lie Puzzle ===
+# === Route 5: generate lie puzzles===
+@app.route('/generate')
+def generate():
+    n = random.randint(3,5)
+    result = generate_instances(n)
+    return jsonify(result)
+
 # n = number of people
 def generate_instances(n):
     s = Solver()
 
-    bools = [] # maybe rename this
+    bools = []
     for i in range(n):
         name = "Shellfish" + str(i)
         bools.append(Bool(name))
@@ -147,13 +156,156 @@ def generate_instances(n):
     else:
         return generate_instances(n)
 
-# === Route 5: generate lie puzzles===
-@app.route('/generate')
-def generate():
-    n = random.randint(3,5)
-    result = generate_instances(n)
-    return jsonify(result)
 
+# === Route 6: magic square puzzle ===
+@app.route('/magic_square')
+def get_4x4_square():
+
+    file_path = os.path.join(app.root_path, 'static', 'magic_squares_4x4.txt')
+
+    f = open(file_path, "r")
+    puzzles = f.readlines()
+
+    puz = random.choice(puzzles)
+    puz = puz.replace("\n", "")
+
+    items = puz.split(" ")
+
+    one_answer = {}
+
+    for sq in items:
+        a = sq.split("=")
+        one_answer[a[0]] = a[1]
+    
+    hidden = random.sample(list(one_answer.keys()), random.randint(1, 16))
+
+    res = {
+        "full": one_answer,
+        "hidden": hidden
+    }
+    
+    return res
+
+@app.route('/check_magic_square', methods=['POST'])
+def check_magic_square():
+
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"success": False, "message": "No data received."})
+    try:
+        values = [int(data[f's{i}']) for i in range(16)]
+    except Exception:
+        return jsonify({"success": False, "message": "All 16 values must be integers."})
+
+    magic_sum = 34
+
+    if (len(values) != len(set(values))):
+        return jsonify({"success": True, "valid": False, "message": " Duplicate Value"})
+
+    box = []
+    for i in range(4):
+        row = []
+        for j in range(4):
+            if (1 <= values[i * 4 + j] and 16 >= values[i * 4 + j]):
+                row.append(values[i * 4 + j])
+            else:
+                return jsonify({"success": True, "valid": False, "message": " Some Value not between 1 and 16"})
+            
+        box.append(row)
+
+    # row
+    for i in range(4):
+        if (sum(box[i]) != magic_sum):
+            return jsonify({"success": True, "valid": False, "message": " Wrong Sum"})
+
+    # column
+    for i in range(4):
+        col = []
+        for j in range(4):
+            col.append(box[i][j])
+                
+        if (sum(box[i]) != magic_sum):
+            return jsonify({"success": True, "valid": False, "message": " Wrong Sum"})
+
+    # diagonals
+    diag1 = []
+    diag2 = []
+    for i in range(4):
+        diag1.append(box[i][i])
+        diag2.append(box[i][3 - i])
+
+    if (sum(diag1) != magic_sum or sum(diag2) != magic_sum):
+        return jsonify({"success": True, "valid": False, "message": " Wrong Sum"})
+
+    return jsonify({"success": True, "valid": True})
+
+# === Route 7: Check User generated magic square puzzle ===
+# Checks whether user's inputs could be made into a valid
+# magic square
+@app.route('/check_gen_ms', methods=['POST'])
+def check_valid_square():
+
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"success": False, "message": "No data received."})
+    
+    v = list(data.values()) # values
+    sqr_ints = list(data) # names
+
+    n = int(math.sqrt(len(v)))
+
+    squares = []
+    for i in range((n * n)):
+        name = sqr_ints[i]
+        squares.append(Int(str(name)))
+
+    s = Solver()
+
+    for i in range(len(v)):
+        if v[i] is not None:
+            s.add(squares[i] == int(v[i]))
+
+    magic_sum = (n * (n * n + 1)) // 2
+
+    for sqr in squares:
+        s.add(sqr <= n * n)
+        s.add(sqr >= 1)
+
+    s.add(Distinct(squares))
+
+    # rows and columns
+    for i in range(n):
+        hor_vals = []
+        ver_vals = []
+        for j in range(n):
+            hor_vals.append(squares[n * i + j])
+            ver_vals.append(squares[i + n * j])
+
+        s.add(Sum(hor_vals) == magic_sum)
+        s.add(Sum(ver_vals) == magic_sum)
+
+    # diagonals
+    diag1 = []
+    diag2 = []
+
+    for i in range(n):
+        diag1.append(squares[i * (n + 1)])
+
+    for i in range(n):
+        diag2.append(squares[(n - 1) * (i + 1)])
+
+    s.add(Sum(diag1) == magic_sum)
+    s.add(Sum(diag2) == magic_sum)
+
+    res = s.check()
+
+    if res == sat:
+        mod = s.model()
+        return jsonify({"success": True, "valid": True, "model": str(mod)})
+    else:
+        return jsonify({"success": True, "valid": False})
 
 # === Flow: Home (start game) ===
 @app.route('/')
@@ -183,6 +335,14 @@ def changeToPuzzle3Intro():
 @app.route('/lie')
 def changeToPuzzle3():
     return render_template('lie.html')
+
+@app.route('/magic-sqr')
+def changeToPuzzle4():
+    return render_template('magic_square.html')
+
+@app.route('/magic-sqr-user')
+def changeToPuzzle5():
+    return render_template('magic_square_user.html')
 
 @app.route('/end')
 def changeToEnd():
