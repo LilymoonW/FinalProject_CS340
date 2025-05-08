@@ -165,8 +165,6 @@ This experience helped us understand the strengths and limitations of different 
 
 ---
 
-We utilized AI to help generate and debug all html and css files.
-
 ##  ˙༄.° Failed Attempts ⋆.˚ ☼⋆𓇼
 We attempted to model the **water jug** puzzle in Alloy. This proved to be a difficult feat as there was kind of awkward arithmetic as the puzzle relies on being able to subtract and add amounts together pretty frequenetly and Alloy uses bounded integers as well so there was a small range of integers we could model. In the future this could be more easily modeled in Z3. Initially the thought was that this could be better for modeling the water jugs over time because of its use of time traces and its temporal logic capabilities. 
 
