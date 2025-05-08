@@ -156,7 +156,7 @@ For the **Lying puzzle**, we limited the scope to only generate puzzles with the
 
 For the **Age puzzle**, we assumed that the product is between 1 to 100 and the sum of ages to be between 2 and 50. This limits the scope of the number of random problems our model can find. Additionally, when generating random variations, I limited the steps to 100—Z3* must find a solvable sum and product within this limit, or it will return undefined.
 
-For the **Magic Squares** puzzle, we limited the size of a magic square a user can generate to 5, as having more rows and columns would take a while to generate.
+For the **Magic Squares** puzzle, we limited the size of a magic square a user can generate to 5, as having more rows and columns would take a while to generate. Additionally, for the generation of magic squares for users to solve, we limited the size of the square to 4, as similar to the user generated magic squares, it would take a while to generate all instances of the magic squares for us to grab and use as puzzles.
 
 ---
 
