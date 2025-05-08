@@ -176,8 +176,8 @@ This experience helped us understand the strengths and limitations of different 
 ##  ˙༄.° Failed Attempts ⋆.˚ ☼⋆𓇼
 We attempted to model the **water jug** puzzle in Alloy. This proved to be a difficult feat as there was kind of awkward arithmetic as the puzzle relies on being able to subtract and add amounts together pretty frequenetly and Alloy uses bounded integers as well so there was a small range of integers we could model. In the future this could be more easily modeled in Z3. Initially the thought was that this could be better for modeling the water jugs over time because of its use of time traces and its temporal logic capabilities. 
 
-
 We also attempted to model **Blue eyed** puzzle in Z3. This proved to be difficult as it was akward to try to model logical reasoning and how beliefs changed, and representing what each person believes others believe. It's dynamic inference which makes it hard to model in z3. Direct rule (e.g., “leave on day k”) is easy to add, but it misses the point of the puzzle. Perhaps modeling in alloy would make it easier.
+
 ---
 
 ##  ˙༄.° Acknowledgements ⋆.˚ ☼⋆𓇼
