@@ -146,7 +146,7 @@ This puzzle is purely logical, with constraints like "the label is always wrong"
 For the **River Crossing Puzzle**, we assumed it was solvable within **100 steps**, despite the fact that the optimal solution only requires **7 steps**.  
 We selected 100 arbitrarily to ensure that Alloy’s bounded analysis wouldn’t miss any valid trace.
 
-For the **Lying puzzle**, we limited the scope to only generate puzzles with the number of people between and including 3 and 5. This limits the number of puzzles we are able to generate. 
+For the **Lying puzzle**, we limited the scope to only generate puzzles with the number of people between and including 3 and 5. Additionally, for each random variation of the puzzle generated with n people, we only generated n statements. These both limit the number of puzzles we are able to generate.
 
 For the **Age puzzle**, we assumed that the product is between 1 to 100 and the sum of ages to be between 2 and 50. This limits the scope of the number of random problems our model can find. Additionally, when generating random variations, I limited the steps to 100—Z3* must find a solvable sum and product within this limit, or it will return undefined.
 
