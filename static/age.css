@@ -1,0 +1,223 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+@font-face {
+  font-family: "Pixelify Sans";
+  src: url("../public/assets/PixelifySans-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+body {
+  background: url("/static/wood.png") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  font-family: "Pixelify Sans", sans-serif;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  overflow: hidden;
+}
+
+.container {
+  background-image: url("/static/clamdoor.png");
+  width: 70%;
+  height: 85%;
+  margin: 10px auto 0 auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border: 5px solid #3f0606;
+  border-radius: 5px;
+  position: relative;
+  transition: background-image 1s ease-in-out, opacity 0.5s ease;
+}
+
+button {
+  font-family: "Pixelify Sans", sans-serif;
+  padding: 20px 20px;
+  font-size: 1.5em;
+  background-color: #442d0f;
+  color: white;
+  border: none;
+  border-radius: 10px; /* Increased border-radius for a smoother curve */
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #5f4006;
+}
+#dialogue-box {
+  position: absolute;
+  border-radius: 10px;
+  left: 10%; /* Equal distance from the left edge */
+  right: 10%; /* Equal distance from the right edge */
+  top: 60%;
+  height: 35%; /* Set height to 35% of the screen */
+  background-color: rgba(15, 1, 1, 0.6);
+  box-shadow: 4px 4px 0 #000;
+  border: 4px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  transition: opacity 0.5s ease;
+}
+
+#dialogue-content {
+  text-align: center;
+  color: rgb(255, 255, 255);
+  position: relative;
+  width: 90%;
+}
+
+#close-btn {
+  position: absolute;
+  top: -15px; /* Moved even higher up */
+  right: 2px; /* Moved even closer to the corner */
+  padding: 5px 10px;
+  background: transparent;
+  color: white;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+#close-btn:hover {
+  color: red;
+}
+#open-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 20px 20px;
+  font-size: 2em;
+  background-color: rgba(15, 1, 1, 0.6);
+  color: white;
+  border: none;
+  border-radius: 10px; /* Increased border-radius for a smoother curve */
+  cursor: pointer;
+  font-family: "Pixelify Sans", sans-serif;
+  font-weight: bold;
+}
+
+#open-btn.hidden {
+  display: none;
+}
+
+#riddle-section {
+  display: none;
+  text-align: center;
+  color: black;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+  font-size: 1.5em;
+}
+#pixelGif {
+  display: none;
+  width: 200px;
+  image-rendering: pixelated;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#choice-box {
+  position: absolute;
+  top: -175px; /* Adjusted to move it further up */
+  width: 25%; /* Adjusted to change the size width */
+  right: 10px;
+  background-color: rgba(15, 1, 1, 0.9);
+  border: 3px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 4px 0 #000;
+  z-index: 15;
+  gap: 10px;
+}
+
+#choice-box button {
+  background: none;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2em;
+  border: none;
+  font-family: "Pixelify Sans", sans-serif;
+  cursor: pointer;
+  text-align: left;
+  padding: 5px;
+}
+
+#choice-box button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+input[type="number"] {
+  width: 100%; /* Default to full width */
+  max-width: 185px; /* Maximum width */
+  padding: 15px;
+  font-size: 1em;
+  border-radius: 10px;
+  border: 3px solid #442d0f;
+  margin-bottom: 15px;
+  background-color: #fff7e6;
+  color: #442d0f;
+  box-shadow: 3px 3px 0 #000;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  input[type="number"] {
+    width: 90%; /* Adjust width for smaller screens */
+  }
+}
+
+@media (min-width: 1200px) {
+  input[type="number"] {
+    width: 150px; /* Adjust width for larger screens */
+  }
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #5f4006;
+  box-shadow: 4px 4px 0 #000;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  75% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
