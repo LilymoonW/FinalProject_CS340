@@ -137,7 +137,7 @@ def get_instances_4by4():
         m = m.replace("\n", "")
         m = m.replace(" ", "")
         m = m.replace(",", " ")
-        f.write(str(m) + "\n")
+        # f.write(str(m) + "\n")
 
 # get a random 4x4 magic square from the txt file
 def get_4x4_square():
