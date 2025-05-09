@@ -34,8 +34,8 @@ FinalProject_CS340/
     ├── age.py            # Age riddle in Z3
     ├── lie.py            # Truth-teller puzzle in Z3
     ├── mislabled.py      # Mislabeled box puzzle in Z3
-    └── river.als         # River crossing puzzle in Alloy
-    └── blue-eye.py       # Blue-eyed islanders puzzle in Z3
+    ├── river.als         # River crossing puzzle in Alloy
+    ├── blue-eye.py       # Blue-eyed islanders puzzle in Z3
     └── magicsquare.py    # Magic Square puzzle in Z3
 ```
 
@@ -132,7 +132,7 @@ This design prevents non-progressive behavior and ensures solution correctness.
 
 ### ⋆༺𓆩⚔𓆪༻⋆ Lying and Truth-Teller Puzzles ⋆༺𓆩⚔𓆪༻⋆
 We used Z3 for the lying and truth-teller puzzles because they involve logical implications which are avaliable in Z3. 
-- why not Alloy? Because Alloy mainly involves using sets which is not necessary for simply logic puzzles such as this one. 
+- Why not Alloy? Because Alloy mainly involves using sets and relationships to describe everything which is not necessary for the constraints for logic puzzles such as this one that only require us to do propositional logic with booleans.
 
 ###  (❀ˆᴗˆ)(•́ᴗ•̀✿) Age Riddles (❀ˆᴗˆ)(•́ᴗ•̀✿)
 We chose Z3 for age riddles because they involve arithmetic constraints like sums, products, and inequalities between variables (e.g., "The sum of their ages is 13").
@@ -163,7 +163,7 @@ For the **Magic Squares** puzzle, we limited the size of a magic square a user c
 ---
 
 ##  ⋆.˚ ☼⋆𓇼｡𖦹˙༄.° Goal Evolution ⋆.˚ ☼⋆𓇼｡𖦹˙༄.°
-Initially we were only planning on adding 3 riddles but added another mislabled boxes to expand on the complexity of our project.
+Initially we were only planning on adding 3 riddles but added mislabled boxes and magic squares to expand on the complexity of our project.
 
 We initially thought the **river crossing puzzle** would be too difficult to model, especially in **Z3**, due to challenges in representing step-by-step transitions. However, switching to **Alloy** proved effective, and we learned:
 
