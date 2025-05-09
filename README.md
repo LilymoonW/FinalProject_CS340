@@ -35,6 +35,8 @@ FinalProject_CS340/
     ├── lie.py            # Truth-teller puzzle in Z3
     ├── mislabled.py      # Mislabeled box puzzle in Z3
     └── river.als         # River crossing puzzle in Alloy
+    └── blue-eye.py       # Blue-eyed islanders puzzle in Z3
+    └── magicsquare.py    # Magic Square puzzle in Z3
 ```
 
 To run a Z3 puzzle:
