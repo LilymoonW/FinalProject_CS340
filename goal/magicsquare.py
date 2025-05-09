@@ -45,6 +45,10 @@ def magic_square1():
 
 # magic_square1()
 
+# Generate instances of a magic square with n rows 
+# and n columns. The grid should be filled with the digits 1 
+# to n^2, each used once. Every row, column, and diagonal 
+# should sum to (n * (n^2 + 1) / 2).
 # n = number of boxes for each square
 def generate_square(n):
 
@@ -57,10 +61,12 @@ def generate_square(n):
 
     magic_sum = (n * (n * n + 1)) / 2
 
+    # each num should be between 1 and n^2
     for sqr in squares:
         s.add(sqr <= n * n)
         s.add(sqr >= 1)
 
+    # each square's number should be different
     s.add(Distinct(squares))
 
     # rows and columns
