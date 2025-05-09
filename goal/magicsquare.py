@@ -69,7 +69,7 @@ def generate_square(n):
     # each square's number should be different
     s.add(Distinct(squares))
 
-    # rows and columns
+    # rows and columns sum must add to magic_sum
     for i in range(n):
         hor_vals = []
         ver_vals = []
@@ -80,10 +80,11 @@ def generate_square(n):
         s.add(sum(hor_vals) == magic_sum)
         s.add(sum(ver_vals) == magic_sum)
 
-    # diagonals
+    # main diagonals
     diag1 = []
     diag2 = []
 
+    # add main diagonals value to list and check their sum
     for i in range(n):
         diag1.append(squares[i * (n + 1)])
 
@@ -105,7 +106,9 @@ def generate_square(n):
 
 # generate_square(4)
 
-# generate all instances of 4x4 magic squares
+# generate all instances of 4x4 magic squares by adding 
+# past instances of magic squares found to the solver so it
+# avoids those instances and tries to find new ones instead.
 def all_models(solver):
     all_models = []
 
@@ -136,7 +139,7 @@ def get_instances_4by4():
         m = m.replace(",", " ")
         f.write(str(m) + "\n")
 
-# get a 4x4 magic square from the txt file
+# get a random 4x4 magic square from the txt file
 def get_4x4_square():
     f = open("magic_squares_4x4.txt", "r")
     puzzles = f.readlines()
