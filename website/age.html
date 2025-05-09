@@ -3,234 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Library Escape Adventure</title>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
-      @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-
-      @font-face {
-        font-family: "Pixelify Sans";
-        src: url("../public/assets/PixelifySans-VariableFont_wght.ttf")
-          format("truetype");
-        font-style: normal;
-        font-weight: 400;
-      }
-
-      body {
-        background: url("/static/wood.png") no-repeat center center fixed;
-        background-size: cover;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        width: 100vw;
-        font-family: "Pixelify Sans", sans-serif;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f0f0f0;
-        overflow: hidden;
-      }
-
-      .container {
-        background-image: url("/static/clamdoor.png");
-        width: 70%;
-        height: 85%;
-        margin: 10px auto 0 auto;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-        border: 5px solid #3f0606;
-        border-radius: 5px;
-        position: relative;
-        transition: background-image 1s ease-in-out, opacity 0.5s ease;
-      }
-
-      button {
-        font-family: "Pixelify Sans", sans-serif;
-        padding: 20px 20px;
-        font-size: 1.5em;
-        background-color: #442d0f;
-        color: white;
-        border: none;
-        border-radius: 10px; /* Increased border-radius for a smoother curve */
-        cursor: pointer;
-        font-weight: bold;
-      }
-
-      button:hover {
-        background-color: #5f4006;
-      }
-      #dialogue-box {
-        position: absolute;
-        border-radius: 10px;
-        left: 10%; /* Equal distance from the left edge */
-        right: 10%; /* Equal distance from the right edge */
-        top: 60%;
-        height: 35%; /* Set height to 35% of the screen */
-        background-color: rgba(15, 1, 1, 0.6);
-        box-shadow: 4px 4px 0 #000;
-        border: 4px solid black;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        transition: opacity 0.5s ease;
-      }
-
-      #dialogue-content {
-        text-align: center;
-        color: rgb(255, 255, 255);
-        position: relative;
-        width: 90%;
-      }
-
-      #close-btn {
-        position: absolute;
-        top: -15px; /* Moved even higher up */
-        right: 2px; /* Moved even closer to the corner */
-        padding: 5px 10px;
-        background: transparent;
-        color: white;
-        font-size: 30px;
-        border: none;
-        cursor: pointer;
-      }
-
-      #close-btn:hover {
-        color: red;
-      }
-      #open-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 20px 20px;
-        font-size: 2em;
-        background-color: rgba(15, 1, 1, 0.6);
-        color: white;
-        border: none;
-        border-radius: 10px; /* Increased border-radius for a smoother curve */
-        cursor: pointer;
-        font-family: "Pixelify Sans", sans-serif;
-        font-weight: bold;
-      }
-
-      #open-btn.hidden {
-        display: none;
-      }
-
-      #riddle-section {
-        display: none;
-        text-align: center;
-        color: black;
-      }
-
-      input {
-        padding: 8px;
-        margin: 5px;
-        font-size: 1.5em;
-      }
-      #pixelGif {
-        display: none;
-        width: 200px;
-        image-rendering: pixelated;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      #choice-box {
-        position: absolute;
-        top: -175px; /* Adjusted to move it further up */
-        width: 25%; /* Adjusted to change the size width */
-        right: 10px;
-        background-color: rgba(15, 1, 1, 0.9);
-        border: 3px solid black;
-        border-radius: 10px;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 4px 4px 0 #000;
-        z-index: 15;
-        gap: 10px;
-      }
-
-      #choice-box button {
-        background: none;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 1.2em;
-        border: none;
-        font-family: "Pixelify Sans", sans-serif;
-        cursor: pointer;
-        text-align: left;
-        padding: 5px;
-      }
-
-      #choice-box button:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 5px;
-        transform: scale(1.05);
-        transition: transform 0.2s ease-in-out;
-      }
-      input[type="number"] {
-        width: 100%; /* Default to full width */
-        max-width: 185px; /* Maximum width */
-        padding: 15px;
-        font-size: 1em;
-        border-radius: 10px;
-        border: 3px solid #442d0f;
-        margin-bottom: 15px;
-        background-color: #fff7e6;
-        color: #442d0f;
-        box-shadow: 3px 3px 0 #000;
-        text-align: center;
-      }
-
-      @media (max-width: 768px) {
-        input[type="number"] {
-          width: 90%; /* Adjust width for smaller screens */
-        }
-      }
-
-      @media (min-width: 1200px) {
-        input[type="number"] {
-          width: 150px; /* Adjust width for larger screens */
-        }
-      }
-
-      input[type="number"]:focus {
-        outline: none;
-        border-color: #5f4006;
-        box-shadow: 4px 4px 0 #000;
-      }
-
-      @keyframes shake {
-        0% {
-          transform: translateX(0);
-        }
-        25% {
-          transform: translateX(-10px);
-        }
-        50% {
-          transform: translateX(10px);
-        }
-        75% {
-          transform: translateX(-10px);
-        }
-        100% {
-          transform: translateX(0);
-        }
-      }
-
-      .shake {
-        animation: shake 0.5s ease-in-out;
-      }
-
-    </style>
+    <link rel="stylesheet" href="/static/age.css" />
   </head>
-
   <body>
     <div id="dialogue-box">
       <div id="dialogue-content">
@@ -267,10 +41,10 @@
       let globalProduct, globalSum;
       let globalProductCheck, globalSumCheck;
       let globalVerificationText;
-
       let userGuess1, userGuess2, userGuess3;
       let userProduct, userSum;
       let userVerificationText;
+
       function goCloser() {
         document.getElementById("story-text").innerText =
           "You see something by the door. Do you observe it?";
@@ -359,191 +133,206 @@
       }
 
       function showRiddleInput() {
-  if (typeof globalProduct === "undefined" || typeof globalSum === "undefined") {
-    document.getElementById("story-text").innerText = "Please wait... loading riddle values.";
-    setTimeout(showRiddleInput, 500); // retry after 0.5s
-    return;
-  }
+        if (
+          typeof globalProduct === "undefined" ||
+          typeof globalSum === "undefined"
+        ) {
+          document.getElementById("story-text").innerText =
+            "Please wait... loading riddle values.";
+          setTimeout(showRiddleInput, 500); // retry after 0.5s
+          return;
+        }
 
-  document.getElementById("story-text").innerText = `Find three numbers where:\nProduct = ${globalProduct}, Sum = ${globalSum}`;
-  document.getElementById("choice-box").innerHTML = ``;
-  document.getElementById("choice-box").style.display = "none";
-  document.getElementById("riddle-section").style.display = "block";
-}
-
-function solveRiddle() {
-  fetch("/solve")
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error) {
-        document.getElementById("solution").innerText = data.error;
-      } else {
-        globalProduct = data.product;
-        globalSum = data.sum;
-        [globalAge1, globalAge2, globalAge3] = data.ages;
-
-        globalProductCheck = globalAge1 * globalAge2 * globalAge3;
-        globalSumCheck = globalAge1 + globalAge2 + globalAge3;
-
-        globalVerificationText =
-          globalProductCheck === globalProduct &&
-          globalSumCheck === globalSum
-            ? "Verification Passed!"
-            : "Verification Failed!";
-
-        console.log(
-          `Real ages: ${globalAge1}, ${globalAge2}, ${globalAge3}`
-        );
+        document.getElementById(
+          "story-text"
+        ).innerText = `Find three numbers where:\nProduct = ${globalProduct}, Sum = ${globalSum}`;
+        document.getElementById("choice-box").innerHTML = ``;
+        document.getElementById("choice-box").style.display = "none";
+        document.getElementById("riddle-section").style.display = "block";
       }
-    })
-    .catch((error) => console.error("Error:", error));
-}
 
-function verifyGuess() {
-  userGuess1 = parseInt(document.getElementById("guess1").value);
-  userGuess2 = parseInt(document.getElementById("guess2").value);
-  userGuess3 = parseInt(document.getElementById("guess3").value);
+      function solveRiddle() {
+        fetch("/solve")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              document.getElementById("solution").innerText = data.error;
+            } else {
+              globalProduct = data.product;
+              globalSum = data.sum;
+              [globalAge1, globalAge2, globalAge3] = data.ages;
 
-  userProduct = userGuess1 * userGuess2 * userGuess3;
-  userSum = userGuess1 + userGuess2 + userGuess3;
+              globalProductCheck = globalAge1 * globalAge2 * globalAge3;
+              globalSumCheck = globalAge1 + globalAge2 + globalAge3;
 
-  userVerificationText =
-    userProduct === globalProduct && userSum === globalSum
-      ? "Correct Guess!"
-      : "Wrong Guess.";
+              globalVerificationText =
+                globalProductCheck === globalProduct &&
+                globalSumCheck === globalSum
+                  ? "Verification Passed!"
+                  : "Verification Failed!";
 
-  const container = document.getElementById("background-container");
-  const dialogueBox = document.getElementById("dialogue-box");
+              console.log(
+                `Real ages: ${globalAge1}, ${globalAge2}, ${globalAge3}`
+              );
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
 
-  document.getElementById("story-text").innerText = userVerificationText;
-  document.getElementById("riddle-section").style.display = "none";
+      function verifyGuess() {
+        userGuess1 = parseInt(document.getElementById("guess1").value);
+        userGuess2 = parseInt(document.getElementById("guess2").value);
+        userGuess3 = parseInt(document.getElementById("guess3").value);
 
-  if (userVerificationText.includes("Correct")) {
-    setTimeout(() => {
-      document.getElementById("story-text").innerText =
-        "You solved the riddle! The door opens, revealing a path to the next room.";
+        userProduct = userGuess1 * userGuess2 * userGuess3;
+        userSum = userGuess1 + userGuess2 + userGuess3;
 
-      setTimeout(() => {
-        container.style.backgroundImage = "url('/static/clamdoor.png')";
-        container.style.transition = "none";
-        dialogueBox.style.display = "none";
-        container.classList.add("shake");
+        userVerificationText =
+          userProduct === globalProduct && userSum === globalSum
+            ? "Correct Guess!"
+            : "Wrong Guess.";
 
-        setTimeout(() => {
-          container.classList.remove("shake");
-          container.style.transition =
-            "opacity 1s ease-in-out, background-image 1s ease-in-out, border 1s ease-in-out";
-          document.body.style.transition = "background-image 1s ease-in-out";
+        const container = document.getElementById("background-container");
+        const dialogueBox = document.getElementById("dialogue-box");
 
-          container.style.border = "3px solid darkblue";
-          container.style.backgroundImage = "url('/static/clam_room2.png')";
-          container.style.opacity = "1";
-          document.body.style.backgroundImage = "url('/static/blue_waves.png')";
+        document.getElementById("story-text").innerText = userVerificationText;
+        document.getElementById("riddle-section").style.display = "none";
 
+        if (userVerificationText.includes("Correct")) {
           setTimeout(() => {
-            dialogueBox.style.display = "flex";
-            dialogueBox.style.opacity = "1";
             document.getElementById("story-text").innerText =
-              "You enter a room with three mysterious Clams:\n\n" +
-              "An inscription reads:\n" +
-              "'All Clams are mislabeled!'\n" +
-              "'Choose wisely to proceed...'";
-
-            document.getElementById("choice-box").innerHTML = `
-              <button onclick="showMismatchedBoxes()">Continue</button>
-            `;
-            document.getElementById("choice-box").style.display = "flex";
-          }, 1000);
-        }, 1000);
-      }, 2000);
-    }, 1000);
-  } else {
-    handleWrongAnswer('/static/clamdoor.png');
-  }
-}
-
-function handleWrongAnswer(backgroundUrl = 'none') {
-  setTimeout(() => {
-    const container = document.getElementById("background-container");
-    const dialogueBox = document.getElementById("dialogue-box");
-
-    // Show failure message
-    document.getElementById("story-text").innerText = "You did the puzzle wrong...";
-    if (backgroundUrl !== 'none') {
-      const img = new Image();
-      img.src = backgroundUrl;
-      img.onload = () => {
-        container.style.backgroundImage = `url('${backgroundUrl}')`;
-        container.style.transition = "background-image 0.5s ease-in-out";
-      };
-      img.onerror = () => {
-        console.error(`Failed to load image: ${backgroundUrl}`);
-      };
-    }
-
-    // Hide selection container if visible
-    const selectionContainer = document.getElementById("selection-container");
-    if (selectionContainer) {
-      selectionContainer.style.display = "none";
-    }
-
-    setTimeout(() => {
-      // Add shake effect
-      container.classList.add("shake");
-
-      setTimeout(() => {
-        // Remove shake and start transition
-        container.classList.remove("shake");
-        container.style.transition = "opacity 1s ease-in-out";
-        dialogueBox.style.transition = "opacity 1s ease-in-out";
-
-        // Fade out container and dialogue
-        container.style.opacity = "0";
-        dialogueBox.style.opacity = "0";
-
-        setTimeout(() => {
-          // Hide elements and change to game over background
-          container.style.display = "none";
-          dialogueBox.style.display = "none";
-          document.body.style.backgroundImage = "url('/static/ending-screen.png')";
-          document.body.style.transition = "background-image 1s ease-in-out";
-
-          // Show game over message after transition
-          setTimeout(() => {
-            dialogueBox.style.display = "flex";
-            dialogueBox.style.opacity = "1";
-            document.getElementById("story-text").innerText =
-              "The room collapses around you...";
+              "You solved the riddle! The door opens, revealing a path to the next room.";
 
             setTimeout(() => {
-              document.getElementById("story-text").innerText =
-                "You feel a strange sensation as everything fades to black...";
-              
+              container.style.backgroundImage = "url('/static/clamdoor.png')";
+              container.style.transition = "none";
+              dialogueBox.style.display = "none";
+              container.classList.add("shake");
+
               setTimeout(() => {
-                const dialogueBox = document.getElementById("dialogue-box");
-                if (dialogueBox) {
-                  dialogueBox.style.display = "none";
-                }
-                window.open('/home', '_self'); // Open in the same tab
-              }, 2000); // Delay before switching to home
-            }, 2000); // Delay before showing fade to black message
-          }, 1000); // Delay before showing game over message
-        }, 1000); // Delay before hiding elements
-      }, 1000); // Shake duration
-    }, 2000); // Initial delay
-  }, 3000); // Delay before starting the sequence
-}
-     
-function showMismatchedBoxes() {
+                container.classList.remove("shake");
+                container.style.transition =
+                  "opacity 1s ease-in-out, background-image 1s ease-in-out, border 1s ease-in-out";
+                document.body.style.transition =
+                  "background-image 1s ease-in-out";
+
+                container.style.border = "3px solid darkblue";
+                container.style.backgroundImage =
+                  "url('/static/clam_room2.png')";
+                container.style.opacity = "1";
+                document.body.style.backgroundImage =
+                  "url('/static/blue_waves.png')";
+
+                setTimeout(() => {
+                  dialogueBox.style.display = "flex";
+                  dialogueBox.style.opacity = "1";
+                  document.getElementById("story-text").innerText =
+                    "You enter a room with three mysterious Clams:\n\n" +
+                    "An inscription reads:\n" +
+                    "'All Clams are mislabeled!'\n" +
+                    "'Choose wisely to proceed...'";
+
+                  document.getElementById("choice-box").innerHTML = `
+              <button onclick="showMismatchedBoxes()">Continue</button>
+            `;
+                  document.getElementById("choice-box").style.display = "flex";
+                }, 1000);
+              }, 1000);
+            }, 2000);
+          }, 1000);
+        } else {
+          handleWrongAnswer("/static/clamdoor.png");
+        }
+      }
+
+      function handleWrongAnswer(backgroundUrl = "none") {
+        setTimeout(() => {
+          const container = document.getElementById("background-container");
+          const dialogueBox = document.getElementById("dialogue-box");
+
+          // Show failure message
+          document.getElementById("story-text").innerText =
+            "You did the puzzle wrong...";
+          if (backgroundUrl !== "none") {
+            const img = new Image();
+            img.src = backgroundUrl;
+            img.onload = () => {
+              container.style.backgroundImage = `url('${backgroundUrl}')`;
+              container.style.transition = "background-image 0.5s ease-in-out";
+            };
+            img.onerror = () => {
+              console.error(`Failed to load image: ${backgroundUrl}`);
+            };
+          }
+
+          // Hide selection container if visible
+          const selectionContainer = document.getElementById(
+            "selection-container"
+          );
+          if (selectionContainer) {
+            selectionContainer.style.display = "none";
+          }
+
+          setTimeout(() => {
+            // Add shake effect
+            container.classList.add("shake");
+
+            setTimeout(() => {
+              // Remove shake and start transition
+              container.classList.remove("shake");
+              container.style.transition = "opacity 1s ease-in-out";
+              dialogueBox.style.transition = "opacity 1s ease-in-out";
+
+              // Fade out container and dialogue
+              container.style.opacity = "0";
+              dialogueBox.style.opacity = "0";
+
+              setTimeout(() => {
+                // Hide elements and change to game over background
+                container.style.display = "none";
+                dialogueBox.style.display = "none";
+                document.body.style.backgroundImage =
+                  "url('/static/ending-screen.png')";
+                document.body.style.transition =
+                  "background-image 1s ease-in-out";
+
+                // Show game over message after transition
+                setTimeout(() => {
+                  dialogueBox.style.display = "flex";
+                  dialogueBox.style.opacity = "1";
+                  document.getElementById("story-text").innerText =
+                    "The room collapses around you...";
+
+                  setTimeout(() => {
+                    document.getElementById("story-text").innerText =
+                      "You feel a strange sensation as everything fades to black...";
+
+                    setTimeout(() => {
+                      const dialogueBox =
+                        document.getElementById("dialogue-box");
+                      if (dialogueBox) {
+                        dialogueBox.style.display = "none";
+                      }
+                      window.open("/home", "_self"); // Open in the same tab
+                    }, 2000); // Delay before switching to home
+                  }, 2000); // Delay before showing fade to black message
+                }, 1000); // Delay before showing game over message
+              }, 1000); // Delay before hiding elements
+            }, 1000); // Shake duration
+          }, 2000); // Initial delay
+        }, 3000); // Delay before starting the sequence
+      }
+
+      function showMismatchedBoxes() {
         loadMismatchedRiddle();
       }
 
       function loadMismatchedRiddle() {
-        fetch('/mismatched')
-          .then(res => res.json())
-          .then(data => {
+        fetch("/mismatched")
+          .then((res) => res.json())
+          .then((data) => {
             let riddle = "Three Clam are mislabeled:\n\n";
-            data.forEach(box => {
+            data.forEach((box) => {
               riddle += `Clam ${box.box} is labeled "${box.label}"\n`;
             });
 
@@ -557,109 +346,112 @@ function showMismatchedBoxes() {
             document.getElementById("choice-box").style.display = "flex";
           });
       }
-    
 
-function peekBox(boxId) {
-  fetch(`/peek/${boxId}`)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("story-text").innerText += `\n You peeked into Clam ${boxId}: it contains ${data.actual}`;
-      showBoxGuessForm();
-    });
-}
+      function peekBox(boxId) {
+        fetch(`/peek/${boxId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById(
+              "story-text"
+            ).innerText += `\n You peeked into Clam ${boxId}: it contains ${data.actual}`;
+            showBoxGuessForm();
+          });
+      }
 
-function showBoxGuessForm() {
-  const labels = ["Pink Pearls", "White Pearls", "Mixed Pearls"];
-  let formHTML = "<p>Guess the correct labels for each box:</p>";
+      function showBoxGuessForm() {
+        const labels = ["Pink Pearls", "White Pearls", "Mixed Pearls"];
+        let formHTML = "<p>Guess the correct labels for each box:</p>";
 
-  for (let i = 1; i <= 3; i++) {
-    formHTML += `<label for="box${i}">Box ${i}:</label><select id="box${i}">`;
-    labels.forEach(label => {
-      formHTML += `<option value="${label}">${label}</option>`;
-    });
-    formHTML += `</select><br>`;
-  }
+        for (let i = 1; i <= 3; i++) {
+          formHTML += `<label for="box${i}">Box ${i}:</label><select id="box${i}">`;
+          labels.forEach((label) => {
+            formHTML += `<option value="${label}">${label}</option>`;
+          });
+          formHTML += `</select><br>`;
+        }
 
-  formHTML += `<button onclick="submitBoxGuess()">Submit Guess</button>`;
-  document.getElementById("choice-box").innerHTML = formHTML;
-}
+        formHTML += `<button onclick="submitBoxGuess()">Submit Guess</button>`;
+        document.getElementById("choice-box").innerHTML = formHTML;
+      }
 
-function submitBoxGuess() {
-  const guess = [
-    document.getElementById("box1").value,
-    document.getElementById("box2").value,
-    document.getElementById("box3").value
-  ];
+      function submitBoxGuess() {
+        const guess = [
+          document.getElementById("box1").value,
+          document.getElementById("box2").value,
+          document.getElementById("box3").value,
+        ];
 
-  fetch('/submit-guess', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ guess })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.correct) {
-        const container = document.getElementById("background-container");
-        const dialogueBox = document.getElementById("dialogue-box");
+        fetch("/submit-guess", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ guess }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.correct) {
+              const container = document.getElementById("background-container");
+              const dialogueBox = document.getElementById("dialogue-box");
 
-        document.getElementById("story-text").innerText = "Correct! The labels are now matched. The clam door creaks open...";
-
-        // Transition to the final room
-        setTimeout(() => {
-          dialogueBox.style.display = "none";
-          container.classList.add("shake");
-
-          setTimeout(() => {
-            container.classList.remove("shake");
-            container.style.transition = "opacity 1s ease-in-out, background-image 1s ease-in-out";
-            container.style.backgroundImage = "url('/static/final-clam-room.png')";
-            container.style.border = "3px solid goldenrod";
-            document.body.style.backgroundImage = "url('/static/brick.png')";
-
-            setTimeout(() => {
-              dialogueBox.style.display = "flex";
-              dialogueBox.style.opacity = "1";
-              showGif();
               document.getElementById("story-text").innerText =
-                "You've completed the adventure! A goose appears and spits out a pearl..";
+                "Correct! The labels are now matched. The clam door creaks open...";
 
-              document.getElementById("choice-box").innerHTML = `
+              // Transition to the final room
+              setTimeout(() => {
+                dialogueBox.style.display = "none";
+                container.classList.add("shake");
+
+                setTimeout(() => {
+                  container.classList.remove("shake");
+                  container.style.transition =
+                    "opacity 1s ease-in-out, background-image 1s ease-in-out";
+                  container.style.backgroundImage =
+                    "url('/static/final-clam-room.png')";
+                  container.style.border = "3px solid goldenrod";
+                  document.body.style.backgroundImage =
+                    "url('/static/brick.png')";
+
+                  setTimeout(() => {
+                    dialogueBox.style.display = "flex";
+                    dialogueBox.style.opacity = "1";
+                    showGif();
+                    document.getElementById("story-text").innerText =
+                      "You've completed the adventure! A goose appears and spits out a pearl..";
+
+                    document.getElementById("choice-box").innerHTML = `
                 <button onclick="finalPuzzle()">Grab the pearl</button>
               `;
-              document.getElementById("choice-box").style.display = "flex";
-            }, 1000);
-          }, 1000);
-        }, 1500);
-        
-      } else {
-        document.getElementById("choice-box").style.display = "none"; 
-        handleWrongAnswer('none')
+                    document.getElementById("choice-box").style.display =
+                      "flex";
+                  }, 1000);
+                }, 1000);
+              }, 1500);
+            } else {
+              document.getElementById("choice-box").style.display = "none";
+              handleWrongAnswer("none");
+            }
+          });
       }
-    });
-}
 
-function finalPuzzle() {
-  document.getElementById("pixelGif").style.display = "none";
-  document.getElementById("story-text").innerText = 
-    "A voice echoes: 'You've obtained the pearl of undecidability!'";
-  document.getElementById("choice-box").style.display = "none";
-  
-  setTimeout(() => {
-    document.getElementById("story-text").innerText = 
-      "The voice echoes again: 'Close your eyes and you will go back home...'";
-    
-    setTimeout(() => {
-      document.body.style.backgroundColor = "black";
-      document.body.innerHTML = ""; // Clear all content on the page
+      function finalPuzzle() {
+        document.getElementById("pixelGif").style.display = "none";
+        document.getElementById("story-text").innerText =
+          "A voice echoes: 'You've obtained the pearl of undecidability!'";
+        document.getElementById("choice-box").style.display = "none";
 
-      
-      setTimeout(() => {
-      window.open('/end', '_self'); // Open in the same tab
-        ;
-      }, 2000);
-    }, 3000);
-  }, 3000);
-}
+        setTimeout(() => {
+          document.getElementById("story-text").innerText =
+            "The voice echoes again: 'Close your eyes and you will go back home...'";
+
+          setTimeout(() => {
+            document.body.style.backgroundColor = "black";
+            document.body.innerHTML = ""; // Clear all content on the page
+
+            setTimeout(() => {
+              window.open("/end", "_self"); // Open in the same tab
+            }, 2000);
+          }, 3000);
+        }, 3000);
+      }
       function showGif() {
         document.getElementById("pixelGif").style.display = "block";
       }
@@ -678,8 +470,6 @@ function finalPuzzle() {
         solveRiddle();
         document.getElementById("open-btn").classList.add("hidden");
       };
-
-
     </script>
   </body>
 </html>

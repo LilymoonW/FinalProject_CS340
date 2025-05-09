@@ -1,7 +1,9 @@
 from z3 import *
 import random
 
-
+# given a list of tuples regarding constraints, returns
+# a list of implications, where the first item in the tuple
+# implies the second item in the tuple.
 def make_implications(statements):
 
     if not statements:
@@ -25,15 +27,15 @@ def make_implications(statements):
 def knight_knave1():
     # true means that they are knights
 
-    b = Bool("b") # mel
-    a = Bool("a") # zoey
+    a = Bool("a") # alice
+    b = Bool("b") # bob
 
     s = Solver()
 
     constraints = []
-    constraints.append((b, And(Not(b), Not(a))))
-    constraints.append((Not(b), Or(b, a)))
-    s.add(And(make_implications(constraints)))
+    constraints.append((b, And(Not(b), Not(a)))) # if Bob is telling the truth
+    constraints.append((Not(b), Or(b, a))) # if bob is lying
+    s.add(And(make_implications(constraints))) # and and add all constraints to solver
     
     res = s.check()
 
@@ -147,7 +149,7 @@ def knight_knave4():
     # -1 = knave, 0 = normal, 1 = knight
     all_c = [] # all constraints
 
-    # have 
+    # can only be 1, 0, or -1. 
     all_c.append(And(k >= -1, k <= 1))
     all_c.append(And(l >= -1, l <= 1))
     all_c.append(And(m >= -1, m <= 1))
@@ -158,17 +160,21 @@ def knight_knave4():
     # implications
     i = []
 
+    # 1) Kenny's statement. 
     i.append((k == 1, k == 1))
     i.append((k == -1, k != 1))
 
+    # 2) Lily's statement
     i.append((l == 1, l == -1))
     i.append((l == -1, l != -1))
 
+    # 3) Max's statement
     i.append((m == 1, l == 1))
     i.append((m == -1, l != 1))
 
+    # create the implications and add to all constraints
     all_c.extend(make_implications(i))
-    s.add(And(all_c))
+    s.add(And(all_c)) # add to solver
 
     res = s.check()
 
@@ -198,7 +204,7 @@ def knight_knave5():
 
     all_c = [] # all constraints
 
-    # have 
+    # can only be 1, 0, or -1. 
     all_c.append(And(k >= -1, k <= 1))
     all_c.append(And(l >= -1, l <= 1))
     all_c.append(And(m >= -1, m <= 1))
@@ -226,6 +232,7 @@ def knight_knave5():
     i.append((m == 1, m == 0))
     i.append((m == -1, Not(m == 0)))
 
+    # create the implications and add to all constraints
     all_c.extend(make_implications(i))
     s.add(And(all_c))
 
@@ -241,9 +248,9 @@ def knight_knave5():
 
 
 # 6
-# Kenny says “I am not the normal,”
-# Lily says “I am not the normal,”
-# Max says “I am not the normal”
+# 1) Kenny says “I am not the normal,”
+# 2) Lily says “I am not the normal,”
+# 3) Max says “I am not the normal”
 # solution: no solutions
 def knight_knave6():
     k = Int("k")
@@ -265,12 +272,16 @@ def knight_knave6():
 
     # implications
     i = []
+
+    #1
     i.append((k == 1, k != 0))
     i.append((k == -1, k == 0))
 
+    #2
     i.append((l == 1, l != 0))
     i.append((l == -1, l == 0))
 
+    #3
     i.append((m == 1, m != 0))
     i.append((m == -1, m == 0))
 
@@ -305,6 +316,7 @@ def generate_instances(n):
         person1 = random.choice(bools)
         person2 = random.choice(bools)
 
+        # whether person1 says that person2 is a knight or knave
         says_is_knave = random.choice([True, False])
 
         # # if person 1 says that person 2 is a knave
