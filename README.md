@@ -106,7 +106,7 @@ Puzzle involves logical constraints, each box is assigned a label which does not
 ### 5. Magic Squares
 Squares with the sum of the rows, columns, and the main diagonals all equating the same number. You can fill in the blanks in a semi-revealed square, or try making your own and verifying it. 
 🔧 Solved using **Z3** 
-Magic square
+
 https://en.wikipedia.org/wiki/Magic_square
 
 ## Tradeoffs in Representation
